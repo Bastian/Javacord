@@ -3,20 +3,27 @@ package org.javacord.core.util.ratelimit;
 import org.javacord.api.DiscordApi;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.util.rest.RestEndpoint;
+import org.javacord.core.util.rest.RestRequest;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RatelimitBucket {
 
+    // The key is the token, as global ratelimits are shared across the same account.
+    private static final Map<String, Long> globalRatelimit = new ConcurrentHashMap<>();
+
     private final DiscordApiImpl api;
+
+    private final ConcurrentLinkedQueue<RestRequest<?>> requestQueue = new ConcurrentLinkedQueue<>();
 
     private final RestEndpoint endpoint;
     private final String majorUrlParameter;
 
     private volatile long rateLimitResetTimestamp = 0;
     private volatile int rateLimitRemaining = 1;
-
-    private volatile boolean hasActiveScheduler = false;
 
     /**
      * Creates a RatelimitBucket for the given endpoint / parameter combination.
@@ -45,40 +52,59 @@ public class RatelimitBucket {
     }
 
     /**
+     * Sets a global ratelimit.
+     *
+     * @param api A discord api instance.
+     * @param resetTimestamp The reset timestamp of the global ratelimit.
+     */
+    public static void setGlobalRatelimit(DiscordApi api, long resetTimestamp) {
+        globalRatelimit.put(api.getToken(), resetTimestamp);
+    }
+
+    /**
+     * Adds the given request to the bucket's queue.
+     *
+     * @param request The request to add.
+     */
+    public void addRequestToQueue(RestRequest<?> request) {
+        requestQueue.add(request);
+    }
+
+    /**
+     * Gets the bucket's current queue.
+     * This queue is the actual internal used reference and thus can be modified.
+     *
+     * @return The buckets queue.
+     */
+    public ConcurrentLinkedQueue<RestRequest<?>> getRequestQueue() {
+        return requestQueue;
+    }
+
+    /**
+     * Polls a request from the bucket's queue.
+     *
+     * @return The polled request.
+     */
+    public RestRequest<?> pollRequestFromQueue() {
+        return requestQueue.poll();
+    }
+
+    /**
+     * Peeks a request from the bucket's queue.
+     *
+     * @return The peeked request.
+     */
+    public RestRequest<?> peekRequestFromQueue() {
+        return requestQueue.peek();
+    }
+
+    /**
      * Gets the rest endpoint of the bucket.
      *
      * @return The endpoint of the bucket. If it's a global limit, the endpoint will be not be present.
      */
     public Optional<RestEndpoint> getEndpoint() {
         return Optional.ofNullable(endpoint);
-    }
-
-    /**
-     * Checks if this bucket has an active scheduler.
-     *
-     * @return Whether this bucket has an active scheduler or not.
-     */
-    public synchronized boolean hasActiveScheduler() {
-        return hasActiveScheduler;
-    }
-
-    /**
-     * Sets if this bucket has an active scheduler.
-     *
-     * @param hasActiveScheduler Whether this bucket has an active scheduler or not.
-     */
-    public synchronized void setHasActiveScheduler(boolean hasActiveScheduler) {
-        this.hasActiveScheduler = hasActiveScheduler;
-    }
-
-    /**
-     * Checks if there is still "space" in this bucket, which means that you can still send requests without being
-     * ratelimited.
-     *
-     * @return Whether you can send requests without being ratelimited or not.
-     */
-    public boolean hasSpace() {
-        return rateLimitRemaining > 0 || getTimeTillSpaceGetsAvailable() <= 0;
     }
 
     /**
@@ -108,8 +134,9 @@ public class RatelimitBucket {
         if (rateLimitRemaining > 0) {
             return 0;
         }
+        long globalRatelimitResetTimestamp = RatelimitBucket.globalRatelimit.getOrDefault(api.getToken(), 0L);
         long timestamp = System.currentTimeMillis() + (api.getTimeOffset() == null ? 0 : api.getTimeOffset());
-        return (int) (rateLimitResetTimestamp - timestamp);
+        return (int) (Math.max(rateLimitResetTimestamp, globalRatelimitResetTimestamp) - timestamp);
     }
 
     /**
