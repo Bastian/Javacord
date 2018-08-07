@@ -239,7 +239,8 @@ public class MessageBuilderDelegateImpl implements MessageBuilderDelegate {
         }
 
         RestRequest<Message> request = new RestRequest<Message>(channel.getApi(), RestMethod.POST, RestEndpoint.MESSAGE)
-                .setUrlParameters(channel.getIdAsString());
+                .setUrlParameters(channel.getIdAsString())
+                .setRatelimitRetries(2);
         if (!attachments.isEmpty() || (embed != null && embed.requiresAttachments())) {
             CompletableFuture<Message> future = new CompletableFuture<>();
             // We access files etc. so this should be async
