@@ -1,5 +1,6 @@
 package org.javacord.api.entity.channel;
 
+import org.javacord.api.audio.AudioConnection;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.VoiceChannelAttachableListenerManager;
@@ -12,6 +13,20 @@ import java.util.concurrent.CompletableFuture;
  * This class represents a voice channel.
  */
 public interface VoiceChannel extends Channel, VoiceChannelAttachableListenerManager {
+
+    /**
+     * Connects to this voice channel.
+     * <p>
+     * If the bot is already connected to this voice channel, it will return the current connection.
+     * <p>
+     * If the bot is connected to another voice channel in the same server, it will close the other audio
+     * channel and connect to this channel with a new audio connection.
+     * 
+     * @return The connected channel.
+     */
+    default CompletableFuture<AudioConnection> connect() {
+        throw new UnsupportedOperationException("This method is missing an implementation!");
+    }
 
     /**
      * Checks if the given user can connect to the voice channel.
