@@ -21,7 +21,7 @@ public interface VoiceChannel extends Channel, VoiceChannelAttachableListenerMan
      * <p>
      * If the bot is connected to another voice channel in the same server, it will close the other audio
      * channel and connect to this channel with a new audio connection.
-     * 
+     *
      * @return The connected channel.
      */
     default CompletableFuture<AudioConnection> connect() {
