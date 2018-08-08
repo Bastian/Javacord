@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * The class represents an audi connection to a {@link VoiceChannel}.
  */
-public interface AudioConnection {
+public interface AudioConnection extends AudioConnectionAttachableListenerManager {
 
     /**
      * Queues the given audio source.
