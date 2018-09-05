@@ -8,6 +8,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageSet;
 import org.javacord.api.entity.webhook.Webhook;
+import org.javacord.api.util.cache.MessageCache;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.message.MessageSetImpl;
 import org.javacord.core.entity.webhook.WebhookImpl;
@@ -28,6 +29,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public interface InternalTextChannel extends TextChannel, InternalTextChannelAttachableListenerManager {
+
+    @Override
+    default MessageCache getMessageCache() {
+        return ((DiscordApiImpl) getApi()).getMessageCache(getId());
+    }
 
     @Override
     default CompletableFuture<Void> type() {

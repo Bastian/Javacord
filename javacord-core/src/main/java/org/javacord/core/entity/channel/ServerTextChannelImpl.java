@@ -4,12 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.channel.ChannelCategory;
 import org.javacord.api.entity.channel.ServerTextChannel;
-import org.javacord.api.util.cache.MessageCache;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.listener.channel.server.text.InternalServerTextChannelAttachableListenerManager;
-import org.javacord.core.util.Cleanupable;
-import org.javacord.core.util.cache.MessageCacheImpl;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -18,13 +15,8 @@ import java.util.Optional;
  * The implementation of {@link ServerTextChannel}.
  */
 public class ServerTextChannelImpl extends ServerChannelImpl
-        implements ServerTextChannel, Cleanupable, InternalTextChannel,
+        implements ServerTextChannel, InternalTextChannel,
                    InternalServerTextChannelAttachableListenerManager {
-
-    /**
-     * The message cache of the server text channel.
-     */
-    private final MessageCacheImpl messageCache;
 
     /**
      * Whether the channel is "not safe for work" or not.
@@ -53,9 +45,6 @@ public class ServerTextChannelImpl extends ServerChannelImpl
         nsfw = data.has("nsfw") && data.get("nsfw").asBoolean();
         parentId = Long.valueOf(data.has("parent_id") ? data.get("parent_id").asText("-1") : "-1");
         topic = data.has("topic") && !data.get("topic").isNull() ? data.get("topic").asText() : "";
-        messageCache = new MessageCacheImpl(
-                api, api.getDefaultMessageCacheCapacity(), api.getDefaultMessageCacheStorageTimeInSeconds(),
-                api.isDefaultAutomaticMessageCacheCleanupEnabled());
     }
 
     /**
@@ -101,18 +90,8 @@ public class ServerTextChannelImpl extends ServerChannelImpl
     }
 
     @Override
-    public MessageCache getMessageCache() {
-        return messageCache;
-    }
-
-    @Override
     public String getMentionTag() {
         return "<#" + getIdAsString() + ">";
-    }
-
-    @Override
-    public void cleanup() {
-        messageCache.cleanup();
     }
 
     @Override

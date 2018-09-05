@@ -42,6 +42,7 @@ import org.javacord.core.entity.webhook.WebhookImpl;
 import org.javacord.core.listener.InternalGloballyAttachableListenerManager;
 import org.javacord.core.util.ClassHelper;
 import org.javacord.core.util.Cleanupable;
+import org.javacord.core.util.cache.MessageCacheImpl;
 import org.javacord.core.util.concurrent.ThreadPoolImpl;
 import org.javacord.core.util.event.EventDispatcher;
 import org.javacord.core.util.event.ListenerManagerImpl;
@@ -204,6 +205,11 @@ public class DiscordApiImpl implements DiscordApi, InternalGloballyAttachableLis
      * The time offset between the Discord time and our local time.
      */
     private volatile Long timeOffset = null;
+
+    /**
+     * A map with all caches. The key is the id of the text channel the cache belongs to.
+     */
+    private final Map<Long, MessageCacheImpl> messageCaches = new ConcurrentHashMap<>();
 
     /**
      * A map which contains all users.
@@ -476,6 +482,33 @@ public class DiscordApiImpl implements DiscordApi, InternalGloballyAttachableLis
         messages.clear();
         messageIdByRef.clear();
         timeOffset = null;
+    }
+
+    /**
+     * Gets a message cache for the text channel with the given id.
+     * If no cache is associated with the given channel id, it will create a new one.
+     *
+     * @param channelId The id of the text channel.
+     * @return The message cache for the text channel.
+     */
+    public MessageCacheImpl getMessageCache(long channelId) {
+        return messageCaches.computeIfAbsent(channelId, id -> new MessageCacheImpl(
+                this,
+                getDefaultMessageCacheCapacity(),
+                getDefaultMessageCacheStorageTimeInSeconds(),
+                isDefaultAutomaticMessageCacheCleanupEnabled()));
+    }
+
+    /**
+     * Removes the message cache for the channel with the given id.
+     *
+     * @param channelId The id of the text channel.
+     */
+    public void removeMessageCache(long channelId) {
+        MessageCacheImpl messageCache = messageCaches.remove(channelId);
+        if (messageCache != null) {
+            messageCache.cleanup();
+        }
     }
 
     /**
