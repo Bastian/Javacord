@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.apache.logging.log4j.Logger;
 import org.javacord.api.AccountType;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.audio.AudioConnection;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.Region;
@@ -30,6 +31,7 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.core.DiscordApiImpl;
+import org.javacord.core.audio.AudioConnectionImpl;
 import org.javacord.core.entity.IconImpl;
 import org.javacord.core.entity.activity.ActivityImpl;
 import org.javacord.core.entity.auditlog.AuditLogImpl;
@@ -168,6 +170,11 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
      * If the server is ready (all members are cached).
      */
     private volatile boolean ready = false;
+
+    /**
+     * The audio connection of the server.
+     */
+    private volatile AudioConnectionImpl audioConnection;
 
     /**
      * A list with all consumers who will be informed when the server is ready.
@@ -772,6 +779,16 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
         return channels.values();
     }
 
+    /**
+     * Gets the audio connection of the server.
+     * Unlike {@link #getAudiConnection()}, this also returns the audio connection if the bot is not yet connected.
+     *
+     * @return The audio connection of the server.
+     */
+    public Optional<AudioConnectionImpl> getPossiblyUnconnectedAudioConnection() {
+        return Optional.ofNullable(this.audioConnection);
+    }
+
     @Override
     public DiscordApi getApi() {
         return api;
@@ -785,6 +802,11 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Optional<AudioConnection> getAudiConnection() {
+        return Optional.empty();
     }
 
     @Override
