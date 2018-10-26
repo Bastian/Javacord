@@ -2,6 +2,7 @@ package org.javacord.core.util.concurrent;
 
 import org.javacord.api.util.concurrent.ThreadPool;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,4 +71,8 @@ public class ThreadPoolImpl implements ThreadPool {
                                        new ThreadFactory("Javacord - " + threadName, true)));
     }
 
+    @Override
+    public Optional<ExecutorService> removeSingleThreadExecutorService(String threadName) {
+        return Optional.ofNullable(executorServiceSingleThreads.remove(threadName));
+    }
 }

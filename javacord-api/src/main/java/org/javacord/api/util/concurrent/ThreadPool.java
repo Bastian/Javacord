@@ -1,5 +1,6 @@
 package org.javacord.api.util.concurrent;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -46,4 +47,13 @@ public interface ThreadPool {
      * @return The executor service with the given thread name. Never {@code null}!
      */
     ExecutorService getSingleDaemonThreadExecutorService(String threadName);
+
+    /**
+     * Removed an existing executor service.
+     * Useful if you shutdown the previous executor service but might want to get a new one in the future.
+     *
+     * @param threadName The thread name of the executor service.
+     * @return The removed executor service with the given thread name.
+     */
+    Optional<ExecutorService> removeSingleThreadExecutorService(String threadName);
 }
