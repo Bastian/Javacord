@@ -172,9 +172,17 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     private volatile boolean ready = false;
 
     /**
-     * The audio connection of the server.
+     * The current audio connection of the server.
      */
     private volatile AudioConnectionImpl audioConnection;
+
+    /**
+     * A pending audio connection.
+     * A pending connection is a connect that is currently trying to connect to a websocket and establish an udp
+     * connection but has not finished.
+     * The field might still be set, even though the connection is no longer pending!
+     */
+    private volatile AudioConnectionImpl pendingAudioConnection;
 
     /**
      * A list with all consumers who will be informed when the server is ready.
@@ -789,13 +797,24 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     /**
-     * Gets the audio connection of the server.
-     * Unlike {@link #getAudiConnection()}, this also returns the audio connection if the bot is not yet connected.
+     * Sets the pending audio connection of the server.
      *
-     * @return The audio connection of the server.
+     * <p>A pending connection is a connect that is currently trying to connect to a websocket and establish an udp
+     * connection but has not finished.
+     *
+     * @param audioConnection The audio connection.
      */
-    public Optional<AudioConnectionImpl> getPossiblyUnconnectedAudioConnection() {
-        return Optional.ofNullable(this.audioConnection);
+    public void setPendingAudioConnection(AudioConnectionImpl audioConnection) {
+        pendingAudioConnection = audioConnection;
+    }
+
+    /**
+     * Gets the pending audio connection of the server.
+     *
+     * @return The pending audio connection of the server.
+     */
+    public Optional<AudioConnectionImpl> getPendingAudioConnection() {
+        return Optional.ofNullable(pendingAudioConnection);
     }
 
     @Override
@@ -815,7 +834,7 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
 
     @Override
     public Optional<AudioConnection> getAudiConnection() {
-        return Optional.empty();
+        return Optional.of(audioConnection);
     }
 
     @Override
