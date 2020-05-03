@@ -11,6 +11,7 @@ Javacord is a modern library that focuses on simplicity and speed 🚀. By reduc
 ## 🎉 Basic usage
 
 The following example logs the bot in and replies to every "!ping" message with "Pong!". 
+
 More sophisticated examples can be found at the [end of the README](#-more-examples). 
 You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a fully functional bot.
 
