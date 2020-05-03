@@ -124,12 +124,11 @@ api.addMessageCreateListener(event -> {
     return;
   }
   
-  MessageAuthor author = event.getMessageAuthor();
-  if (author.isUser()) { // Ignore message authors that are no users (e.g., webhooks)
+  if (event.getMessageAuthor().isUser()) { // Ignore message authors that are no users (e.g., webhooks)
     return;
   }
   
-  User userAuthor = author.asUser().orElseThrow(AssertionError::new);
+  User author = event.getMessageAuthor().asUser().orElseThrow(AssertionError::new);
   ServerTextChannel textChannel = event.getServerTextChannel().orElseThrow(AssertionError::new);
   ServerVoiceChannel voiceChannel = author.getConnectedVoiceChannel(channel.getServer()).orElse(null);
 
@@ -143,7 +142,7 @@ api.addMessageCreateListener(event -> {
     event.getChannel().sendMessage("Sorry, I'm already in a voice channel!");
   }
 
-  // Connect to the voice channel and play "Dschinghis Khan - Moskau"
+  // Connect to the voice channel and play the song
   voiceChannel.connect()
     .thenAcceptAsync(connection -> {
       connection.set(YouTubeAudioSource.of(api, "https://youtu.be/NvS351QKFV4").join());
