@@ -210,6 +210,8 @@ For commands, you can even use one of the many existing command frameworks like
 * [Command Framework](https://github.com/Vampire/command-framework) 
 * [Sdcf4j](https://github.com/Bastian/sdcf4j)
 
+or even write your own!
+
 ### Attach listeners to objects 📌
 
 
