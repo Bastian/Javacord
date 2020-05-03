@@ -138,11 +138,13 @@ api.addMessageCreateListener(event -> {
     // Make sure that the user (that has typed the command) is in a voice channel
     if (voiceChannel == null) {
         event.getChannel().sendMessage("Please join a voice channel first!");
+        return;
     }
 
     // Check if the bot is already in a voice channel on the server
     if (textChannel.getServer().getAudioConnection().isPresent()) {
         event.getChannel().sendMessage("Sorry, I'm already in a voice channel!");
+        return;
     }
 
     // Connect to the voice channel and play the song
