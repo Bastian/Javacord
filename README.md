@@ -157,7 +157,7 @@ api.addMessageCreateListener(event -> {
 
 ### Using the MessageBuilder 🛠
 
-<img align="right" src="https://i.imgur.com/AP1cjDf.png" width="35%">
+<img align="right" src="https://i.imgur.com/AP1cjDf.png" width="34%">
 
 The following example uses the built-in `MessageBuilder`. It is very useful to construct complex messages with images, code-blocks, embeds, or attachments.
 
@@ -202,7 +202,7 @@ api.addListener(new MyListener());
 
 You can even attach listeners to objects. Let's say you have a very sensible bot. As soon as someone reacts with a 👎 within the first 30 minutes of message creation, it deletes its own message:
 
-<img align="right" src="https://i.imgur.com/DTMIIqA.gif" width="38%"> 
+<img align="right" src="https://i.imgur.com/DTMIIqA.gif" width="36%"> 
 
 ```java
 api.addMessageCreateListener(event -> {
