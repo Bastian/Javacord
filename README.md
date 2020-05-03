@@ -35,12 +35,11 @@ public class MyFirstBot {
 
 <img align="left" src="https://i.imgur.com/VP4eU4a.gif" height="150px">
 
+<p height="150px">
 More sophisticated examples can be found at the [end of the README](#-more-examples). 
 You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a fully functional bot.
-<br/>
-<br/>
-<br/>
-<br/>
+<p>
+
 
 ## 📦 Download / Installation
 
