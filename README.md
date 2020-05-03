@@ -4,6 +4,8 @@
 
 An easy to use multithreaded library for creating Discord bots in Java.
 
+Discord bots are 
+
 ## Basic usage
 
 <img align="right" src="https://i.imgur.com/q8rsAhL.gif" width="20.5%">
@@ -38,8 +40,6 @@ Check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a more 
 The recommended way to get Javacord is to use a build manager, like Gradle or Maven.  
 If you are not familiar with build managers, you can follow this [Setup Guide](#ide-setup) 
 or download Javacord directly from [GitHub](https://github.com/Javacord/Javacord/releases/latest).
-
-
 
 ### Javacord Dependency
 
@@ -88,10 +88,13 @@ Javacord's Discord community is an excellent resource if you have questions abou
 * The [Javacord Wiki](https://javacord.org/wiki/) is a great place to get started 
 * Additional documentation can be found in the [JavaDoc](https://docs.javacord.org/api/v/latest/)
 
-
 ## How to create a bot user and get its token 
 
 * **[Creating a Bot User Account](https://javacord.org/wiki/essential-knowledge/creating-a-bot-account/)**
+
+## Discord Server
+
+Join the [Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3) for support, status updates, or just chatting with other users.
 
 ## Version numbers
 
@@ -110,9 +113,50 @@ best to deprecate it before removing it. We are unable to guarantee this though,
 something due to changes made by Discord, which we are unable to control. Usually you can expect a deprecated method or
 class to stay for at least 6 months before it finally gets removed, but this is not guaranteed.
 
-## Discord Server
+## 🙌 More examples 
 
-Join the [Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3) for support, status updates, or just chatting with other users.
+### 🎵 Play a song from YouTube 
+
+```java
+
+api.addMessageCreateListener(event -> {
+  if (!event.isServerMessage()) { // Ignore direct messages
+    return;
+  }
+  
+  MessageAuthor author = event.getMessageAuthor();
+  if (author.isUser()) { // Ignore message authors that are no users (e.g., webhooks)
+    return;
+  }
+  
+  User userAuthor = author.asUser().orElseThrow(AssertionError::new);
+  ServerTextChannel textChannel = event.getServerTextChannel().orElseThrow(AssertionError::new);
+  ServerVoiceChannel voiceChannel = author.getConnectedVoiceChannel(channel.getServer()).orElse(null);
+
+  // Make sure that the user (that has typed the command) is in a voice channel
+  if (voiceChannel == null) {
+    event.getChannel().sendMessage("Please join a voice channel first!");
+  }
+
+  // Check if the bot is already in a voice channel on the server
+  if (textChannel.getServer().getAudioConnection().isPresent()) {
+    event.getChannel().sendMessage("Sorry, I'm already in a voice channel!");
+  }
+
+  // Connect to the voice channel and play "Dschinghis Khan - Moskau"
+  voiceChannel.connect()
+    .thenAcceptAsync(connection -> {
+      connection.set(YouTubeAudioSource.of(api, "https://youtu.be/NvS351QKFV4").join());
+      connection.addAudioSourceFinishedListener(e -> connection.close());
+    })
+    .exceptionally(throwable -> {
+      textChannel.sendMessage("Failed to play song!");
+      throwable.printStrackTrace();
+      return null;
+    });
+  });
+}
+```
 
 ## License
 
