@@ -196,7 +196,7 @@ new MessageBuilder()
 
 ### Listener in their own class 🗃
 
-All the previous examples used inline listeners for similicity. For better readability it is also possible to have listeners in their own class:
+All the previous examples used inline listeners for simplicity. For better readability it is also possible to have listeners in their own class:
 
 ```java
 public class MyListener implements MessageCreateListener {
