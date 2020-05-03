@@ -39,6 +39,8 @@ More sophisticated examples can be found at the [end of the README](#-more-examp
 You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a fully functional bot.
 <br/>
 <br/>
+<br/>
+<br/>
 
 ## 📦 Download / Installation
 
