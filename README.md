@@ -34,6 +34,7 @@ public class MyFirstBot {
 ```
 
 Check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a more sophisticated example.
+More example can be found at the [end of the README](#-more-examples).
 
 ## 📦 Download / Installation
 
