@@ -39,27 +39,24 @@ The recommended way to get Javacord is to use a build manager, like Gradle or Ma
 If you are not familiar with build managers, you can follow this [Setup Guide](#ide-setup) 
 or download Javacord directly from [GitHub](https://github.com/Javacord/Javacord/releases/latest).
 
+
+
 ### Javacord Dependency
 
-<p align="right" width="49%">
-<h4>Gradle</h4>
-```groovy
-repositories { mavenCentral() }
-dependencies { implementation 'org.javacord:javacord:3.0.4' }
-``` 
-</p>
-
-<p align="right" width="49%">
-<h4>Maven</h4>
-```xml
-<dependency>
-    <groupId>org.javacord</groupId>
-    <artifactId>javacord</artifactId>
-    <version>3.0.4</version>
-    <type>pom</type>
-</dependency>
-```
-</p>
+<table>
+  <tr>
+   <th>Gradle</th>
+    <th>Maven</th>
+  </tr>
+  <tr><td><pre lang="groovy"><code>repositories { mavenCentral() }
+dependencies { implementation 'org.javacord:javacord:3.0.4' }</code></pre></td>
+  <td><pre lang="xml"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.javacord&lt;/groupId&gt;
+    &lt;artifactId&gt;javacord&lt;/artifactId&gt;
+    &lt;version&gt;3.0.5&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency&gt;</code></pre></td></tr>
+</table>
 
 ### Optional Logger Dependency
 
