@@ -83,12 +83,12 @@ If you have never used Gradle or Maven before, you should take a look at one of 
 Javacord's Discord community is an excellent resource if you have questions about the library.  
 * **[The Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3)**
 
-## Documentation
+## 📒 Documentation
 
 * The [Javacord Wiki](https://javacord.org/wiki/) is a great place to get started 
 * Additional documentation can be found in the [JavaDoc](https://docs.javacord.org/api/v/latest/)
 
-## How to create a bot user and get its token 
+## 💡 How to create a bot user and get its token 
 
 * **[Creating a Bot User Account](https://javacord.org/wiki/essential-knowledge/creating-a-bot-account/)**
 
@@ -105,7 +105,7 @@ The version number has a 3-digit format: `major.minor.trivial`
 * `trivial`: A backwards compatible change to the **api**. This is usually an important bugfix (or a bunch of smaller ones)
  or a backwards compatible feature addition. You can expect this digit to change 1-2 times per month.
  
-## Deprecation policy
+## 🔨 Deprecation policy
 
 A method or class that is marked as deprecated can be removed with the next minor release (but it will usually stay for
 several minor releases). A minor release might remove a class or method without having it deprecated, but we will do our
