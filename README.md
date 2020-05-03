@@ -215,6 +215,8 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
+![](https://i.imgur.com/oFAl1HN.gif)
+
 ## 📃 License
 
 Javacord is distributed under the [Apache license version 2.0](./LICENSE).
