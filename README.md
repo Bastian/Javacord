@@ -2,11 +2,11 @@
 
 # Javacord [![Latest version](https://shields.javacord.org/github/release/Javacord/Javacord.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/Javacord/Javacord/releases/latest) [![Latest JavaDocs](https://shields.javacord.org/badge/JavaDoc-Latest-yellow.svg?style=flat-square)](https://docs.javacord.org/api/v/latest/) [![Javacord Wiki](https://shields.javacord.org/badge/Wiki-Home-red.svg?style=flat-square)](https://javacord.org/wiki/) [![Javacord Discord server](https://shields.javacord.org/discord/151037561152733184.svg?colorB=%237289DA&label=Discord&style=flat-square)](https://discord.gg/0qJ2jjyneLEgG7y3)
 
-An easy to use multithreaded library for creating Discord bots in Java. 
+An easy to use multithreaded library for creating Discord bots in Java.
 
-## 👀 Basic usage
+## Basic usage
 
-<img align="right" src="https://i.imgur.com/q8rsAhL.gif" width="20.5%">
+<img align="right" src="https://i.imgur.com/q8rsAhL.gif" width="20.75%">
 
 ```java
 public class MyFirstBot {
@@ -30,6 +30,8 @@ public class MyFirstBot {
 
 }
 ```
+
+Check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a more sophisticated example.
 
 ## Download / Installation
 
@@ -84,59 +86,6 @@ Javacord's Discord community is an excellent resource if you have questions abou
 * The [Javacord Wiki](https://javacord.org/wiki/) is a great place to get started 
 * Additional documentation can be found in the [JavaDoc](https://docs.javacord.org/api/v/latest/)
 
-## Logging in
-
-Logging in is very simple
-```java
-public class MyFirstBot {
-
-    public static void main(String[] args) {
-        // Insert your bot's token here
-        String token = "your token";
-
-        DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
-
-        // Add a listener which answers with "Pong!" if someone writes "!ping"
-        api.addMessageCreateListener(event -> {
-            if (event.getMessageContent().equalsIgnoreCase("!ping")) {
-                event.getChannel().sendMessage("Pong!");
-            }
-        });
-
-        // Print the invite url of your bot
-        System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
-    }
-
-}
-```
-
-You can also login non-blocking asynchronously
-```java
-public class MyFirstBot {
-
-    public static void main(String[] args) {
-        // Insert your bot's token here
-        String token = "your token";
-
-        new DiscordApiBuilder().setToken(token).login().thenAccept(api -> {
-                    // Add a listener which answers with "Pong!" if someone writes "!ping"
-                    api.addMessageCreateListener(event -> {
-                        if (event.getMessageContent().equalsIgnoreCase("!ping")) {
-                            event.getChannel().sendMessage("Pong!");
-                        }
-                    });
-
-                    // Print the invite url of your bot
-                    System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
-                })
-                // Log any exceptions that happened
-                .exceptionally(ExceptionLogger.get());
-    }
-
-}
-```
-
-Check out the [Example Bot](https://github.com/Javacord/Example-Bot) to learn more.
 
 ## How to create a bot user and get its token 
 
@@ -162,3 +111,7 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 ## Discord Server
 
 Join the [Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3) for support, status updates, or just chatting with other users.
+
+## License
+
+Javacord is distributed under the [Apache license version 2.0](./LICENSE).
