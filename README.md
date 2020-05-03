@@ -177,7 +177,7 @@ new MessageBuilder()
   .send(channel);
 ```
 
-### Listener in their own class
+### Listener in their own class 🗃
 
 All the previous examples used inline listeners for similicity. For better readability it is also possible to have listeners in their own class:
 
