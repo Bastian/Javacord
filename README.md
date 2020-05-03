@@ -145,9 +145,11 @@ api.addMessageCreateListener(event -> {
   voiceChannel.connect()
     .thenAcceptAsync(connection -> {
       connection.set(YouTubeAudioSource.of(api, "https://youtu.be/NvS351QKFV4").join());
+      // Leave the voice channel when the song finished
       connection.addAudioSourceFinishedListener(e -> connection.close());
     })
     .exceptionally(throwable -> {
+      // Something went wrong
       textChannel.sendMessage("Failed to play song!");
       throwable.printStrackTrace();
       return null;
