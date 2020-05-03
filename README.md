@@ -164,9 +164,9 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
-### Using the MessageBuilder 🛠
-
 <img align="right" src="https://i.imgur.com/AP1cjDf.png" width="34%">
+
+### Using the MessageBuilder 🛠
 
 The following example uses the built-in `MessageBuilder`. It is very useful to construct complex messages with images, code-blocks, embeds, or attachments.
 
