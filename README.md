@@ -206,15 +206,15 @@ You can even attach listeners to objects. Let's say you have a very sensible bot
 
 ```java
 api.addMessageCreateListener(event -> {
-  if (event.getMessageContent().equalsIgnoreCase("!ping")) {
-    event.getChannel().sendMessage("Pong!").thenAccept(message -> {
-      message.addReactionAddListener(reactionEvent -> {
-        if (reactionEvent.getEmoji().equalsEmoji("👎")) {
-          reactionEvent.deleteMessage();
-        }
-      }).removeAfter(30, TimeUnit.MINUTES);
-    });
-  }
+    if (event.getMessageContent().equalsIgnoreCase("!ping")) {
+        event.getChannel().sendMessage("Pong!").thenAccept(message -> {
+            message.addReactionAddListener(reactionEvent -> {
+                if (reactionEvent.getEmoji().equalsEmoji("👎")) {
+                    reactionEvent.deleteMessage();
+                }
+            }).removeAfter(30, TimeUnit.MINUTES);
+        });
+    }
 }
 ```
 
