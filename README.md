@@ -115,7 +115,7 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 
 ### Play a song from YouTube 🎵
 
-The following example bot shows how to play a song from YouTube. As soon as a user types "!music" in the chat, the bot joins the current voice channel of this user and plays [the song](https://youtu.be/NvS351QKFV4) from YouTube. This requires the [Lavaplayer-Wrapper](https://github.com/Bastian/Lavaplayer-Wrapper) library as an additional dependency.
+The following example shows how to play a song from YouTube. As soon as a user types "!music" in the chat, the bot joins the current voice channel of this user and plays [the song](https://youtu.be/NvS351QKFV4) from YouTube. This requires the [Lavaplayer-Wrapper](https://github.com/Bastian/Lavaplayer-Wrapper) library as an additional dependency.
 
 ```java
 api.addMessageCreateListener(event -> {
