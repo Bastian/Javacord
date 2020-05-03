@@ -6,7 +6,7 @@ An easy to use multithreaded library for creating Discord bots in Java.
 
 Discord bots are 
 
-## Basic usage
+## 🎉 Basic usage
 
 <img align="right" src="https://i.imgur.com/q8rsAhL.gif" width="20.5%">
 
@@ -35,7 +35,7 @@ public class MyFirstBot {
 
 Check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a more sophisticated example.
 
-## Download / Installation
+## 📥 Download / Installation
 
 The recommended way to get Javacord is to use a build manager, like Gradle or Maven.  
 If you are not familiar with build managers, you can follow this [Setup Guide](#ide-setup) 
