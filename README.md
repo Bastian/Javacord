@@ -200,7 +200,7 @@ api.addListener(new MyListener());
 ### Attach listeners to objects 📌
 
 
-You can even attach listeners to objects. E.g. let's say you have a very sensible bot. As soon as someone reacts with a 👎 within the first 30 minutes of message creation, it deletes its own message:
+You can even attach listeners to objects. Let's say you have a very sensible bot. As soon as someone reacts with a 👎 within the first 30 minutes of message creation, it deletes its own message:
 
 <img align="right" src="https://i.imgur.com/DTMIIqA.gif" width="34%"> 
 
