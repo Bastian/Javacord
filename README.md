@@ -117,41 +117,41 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 ```java
 
 api.addMessageCreateListener(event -> {
-  if (!event.isServerMessage()) { // Ignore direct messages
-    return;
-  }
+    if (!event.isServerMessage()) { // Ignore direct messages
+        return;
+    }
   
-  if (event.getMessageAuthor().isUser()) { // Ignore message authors that are no users (e.g., webhooks)
-    return;
-  }
+    if (event.getMessageAuthor().isUser()) { // Ignore message authors that are no users (e.g., webhooks)
+        return;
+    }
   
-  User author = event.getMessageAuthor().asUser().orElseThrow(AssertionError::new);
-  ServerTextChannel textChannel = event.getServerTextChannel().orElseThrow(AssertionError::new);
-  ServerVoiceChannel voiceChannel = author.getConnectedVoiceChannel(channel.getServer()).orElse(null);
+    User author = event.getMessageAuthor().asUser().orElseThrow(AssertionError::new);
+    ServerTextChannel textChannel = event.getServerTextChannel().orElseThrow(AssertionError::new);
+    ServerVoiceChannel voiceChannel = author.getConnectedVoiceChannel(channel.getServer()).orElse(null);
 
-  // Make sure that the user (that has typed the command) is in a voice channel
-  if (voiceChannel == null) {
-    event.getChannel().sendMessage("Please join a voice channel first!");
-  }
+    // Make sure that the user (that has typed the command) is in a voice channel
+    if (voiceChannel == null) {
+        event.getChannel().sendMessage("Please join a voice channel first!");
+    }
 
-  // Check if the bot is already in a voice channel on the server
-  if (textChannel.getServer().getAudioConnection().isPresent()) {
-    event.getChannel().sendMessage("Sorry, I'm already in a voice channel!");
-  }
+    // Check if the bot is already in a voice channel on the server
+    if (textChannel.getServer().getAudioConnection().isPresent()) {
+        event.getChannel().sendMessage("Sorry, I'm already in a voice channel!");
+    }
 
-  // Connect to the voice channel and play the song
-  voiceChannel.connect()
-    .thenAcceptAsync(connection -> {
-      connection.set(YouTubeAudioSource.of(api, "https://youtu.be/NvS351QKFV4").join());
-      // Leave the voice channel when the song finished
-      connection.addAudioSourceFinishedListener(e -> connection.close());
-    })
-    .exceptionally(throwable -> {
-      // Something went wrong
-      textChannel.sendMessage("Failed to play song!");
-      throwable.printStrackTrace();
-      return null;
-    });
+    // Connect to the voice channel and play the song
+    voiceChannel.connect()
+      .thenAcceptAsync(connection -> {
+          connection.set(YouTubeAudioSource.of(api, "https://youtu.be/NvS351QKFV4").join());
+          // Leave the voice channel when the song finished
+          connection.addAudioSourceFinishedListener(e -> connection.close());
+      })
+      .exceptionally(throwable -> {
+          // Something went wrong
+          textChannel.sendMessage("Failed to play song!");
+          throwable.printStrackTrace();
+          return null;
+      });
   });
 }
 ```
@@ -175,6 +175,28 @@ new MessageBuilder()
         .setDescription("Really cool pictures!")
         .setColor(Color.ORANGE))
   .send(channel);
+```
+
+### Listener in their own class
+
+All the previous examples used inline listeners for similicity. For better readability it is also possible to have listeners in their own class:
+
+```java
+api.addListener(new MyListener());
+```
+and
+```java
+public class MyListener implements MessageCreateListener {
+
+    @Override
+    public void onMessageCreate(MessageCreateEvent event) {
+        Message message = event.getMessage();
+        if (message.getContent().equalsIgnoreCase("!ping")) {
+            event.getChannel().sendMessage("Pong!");
+        }
+    }
+
+}
 ```
 
 ## 📃 License
