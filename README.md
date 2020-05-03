@@ -234,6 +234,35 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
+### Creating a temporary voice channel 🎧
+
+This example creates a temporary voice channel that gets deleted when the last user leaves it or if noone joins it within the first 30 seconds after creation.
+
+```java
+Server server = ...;
+ServerVoiceChannel channel = new ServerVoiceChannelBuilder(server)
+        .setName("tmp-channel")
+        .setUserlimit(10)
+        .create()
+        .join();
+
+// Delete the channel if the last user leaves
+channel.addServerVoiceChannelMemberLeaveListener(event -> {
+    if (event.getChannel().getConnectedUserIds().isEmpty()) {
+        event.getChannel().delete();
+    }
+});
+
+// Delete the channel if no user joined in the first 30 seconds 
+api.getThreadPool().getScheduler().schedule(() -> {
+    if (channel.getConnectedUserIds().isEmpty()) {
+        channel.delete();
+    }
+}, 30, TimeUnit.SECONDS);
+```
+
+> **Note**: You should also make sure to remove the channels on bot shutdown (or startup)
+
 ## 📃 License
 
 Javacord is distributed under the [Apache license version 2.0](./LICENSE).
