@@ -41,7 +41,7 @@ You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot
 ## 📦 Download / Installation
 
 The recommended way to get Javacord is to use a build manager, like Gradle or Maven.  
-If you are not familiar with build managers, you can follow this [Setup Guide](#ide-setup) 
+If you are not familiar with build managers, you can follow this [Setup Guide](#-ide-setup) 
 or download Javacord directly from [GitHub](https://github.com/Javacord/Javacord/releases/latest).
 
 ### Javacord Dependency
