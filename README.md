@@ -238,7 +238,7 @@ api.addMessageCreateListener(event -> {
     }
 }
 ```
-
+The result then looks like this:
 <img src="https://i.imgur.com/DTMIIqA.gif" height="300px">
 
 ### Creating a temporary voice channel 💣🎧
