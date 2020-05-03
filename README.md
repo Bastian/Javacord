@@ -194,7 +194,6 @@ public class MyListener implements MessageCreateListener {
 
 }
 ```
-and
 ```java
 api.addListener(new MyListener());
 ```
