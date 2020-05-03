@@ -27,7 +27,7 @@ public class MyFirstBot {
         });
 
         // Print the invite url of your bot
-        System.out.println("Invite me: " + api.createBotInvite());
+        System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
     }
 
 }
