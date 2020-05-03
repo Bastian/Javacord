@@ -99,10 +99,9 @@ Javacord's Discord community is an excellent resource if you have questions abou
 
 The version number has a 3-digit format: `major.minor.trivial`
 * `major`: Increased extremely rarely to mark a major release (usually a rewrite affecting very huge parts of the library).
- You can expect this digit to not change for several years.
-* `minor`: Any backwards incompatible change to the api. You can expect this digit to change about 1-3 times per year.
+* `minor`: Any backwards incompatible change to the api. 
 * `trivial`: A backwards compatible change to the **api**. This is usually an important bugfix (or a bunch of smaller ones)
- or a backwards compatible feature addition. You can expect this digit to change 1-2 times per month.
+ or a backwards compatible feature addition.
  
 ## 🔨 Deprecation policy
 
