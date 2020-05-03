@@ -41,13 +41,16 @@ or download Javacord directly from [GitHub](https://github.com/Javacord/Javacord
 
 ### Javacord Dependency
 
-#### Gradle
+<p align="right" width="49%">
+<h4>Gradle</h4>
 ```groovy
 repositories { mavenCentral() }
 dependencies { implementation 'org.javacord:javacord:3.0.4' }
-```
+``` 
+</p>
 
-#### Maven
+<p align="right" width="49%">
+<h4>Maven</h4>
 ```xml
 <dependency>
     <groupId>org.javacord</groupId>
@@ -56,6 +59,7 @@ dependencies { implementation 'org.javacord:javacord:3.0.4' }
     <type>pom</type>
 </dependency>
 ```
+</p>
 
 ### Optional Logger Dependency
 
