@@ -10,7 +10,7 @@ Javacord is a modern library that focuses on simplicity and speed 🚀. By reduc
 
 The following example logs the bot in and replies to every "!ping" message with "Pong!". 
 
-<img align="right" src="https://i.imgur.com/43Za2WW.gif" height="410px" style="align: right">
+<img align="right" src="https://i.imgur.com/43Za2WW.gif" height="412px" style="align: right">
 
 ```java
 public class MyFirstBot {
