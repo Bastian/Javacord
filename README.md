@@ -4,6 +4,8 @@
 
 An easy to use multi-threaded library for creating Discord bots in Java.
 
+<img align="right" src="https://i.imgur.com/es0HHzD.gif"> 
+
 Javacord is a modern library that focuses on simplicity and speed 🚀. By reducing itself to standard Java classes and features like [`Optional`s](https://javacord.org/wiki/essential-knowledge/working-with-optionals/) and [`CompletableFuture`s](https://javacord.org/wiki/essential-knowledge/working-with-futures/), it is extemely easy to use for every Java developers as it does not requires you to learn any new frameworks or complex abstractions. It has rich [documentation](#-documentation) and an [awesome community on Discord](#-support) that loves to help with any specific problems and questions.
 
 ## 🎉 Basic usage
@@ -32,8 +34,6 @@ public class MyFirstBot {
 
 }
 ```
-
-<img align="right" src="https://i.imgur.com/es0HHzD.gif"> 
 
 More sophisticated examples can be found at the [end of the README](#-more-examples). 
 You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a fully functional bot.
