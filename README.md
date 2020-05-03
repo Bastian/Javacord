@@ -35,7 +35,7 @@ public class MyFirstBot {
 
 Check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a more sophisticated example.
 
-## 📥 Download / Installation
+## 📦 Download / Installation
 
 The recommended way to get Javacord is to use a build manager, like Gradle or Maven.  
 If you are not familiar with build managers, you can follow this [Setup Guide](#ide-setup) 
@@ -71,14 +71,14 @@ dependencies { runtimeOnly 'org.apache.logging.log4j:log4j-core:2.11.0' }
 ```
 Take a look at the [Logger Configuration](https://javacord.org/wiki/basic-tutorials/logger-configuration/) wiki article for further information.
 
-## IDE Setup
+## 🔧 IDE Setup
 
 If you have never used Gradle or Maven before, you should take a look at one of the setup tutorials:
 * **[IntelliJ & Gradle](https://javacord.org/wiki/getting-started/intellij-gradle/)** _(recommended)_
 * **[IntelliJ & Maven](https://javacord.org/wiki/getting-started/intellij-maven/)**
 * **[Eclipse & Maven](https://javacord.org/wiki/getting-started/eclipse-maven/)**
 
-## Support
+## 🤝 Support
 
 Javacord's Discord community is an excellent resource if you have questions about the library.  
 * **[The Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3)**
@@ -92,11 +92,11 @@ Javacord's Discord community is an excellent resource if you have questions abou
 
 * **[Creating a Bot User Account](https://javacord.org/wiki/essential-knowledge/creating-a-bot-account/)**
 
-## Discord Server
+## 😎 Discord Server
 
 Join the [Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3) for support, status updates, or just chatting with other users.
 
-## Version numbers
+## 📋 Version numbers
 
 The version number has a 3-digit format: `major.minor.trivial`
 * `major`: Increased extremely rarely to mark a major release (usually a rewrite affecting very huge parts of the library).
@@ -157,6 +157,6 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
-## License
+## 👨🏼‍⚖️License
 
 Javacord is distributed under the [Apache license version 2.0](./LICENSE).
