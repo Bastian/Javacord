@@ -1,11 +1,12 @@
 ![](https://javacord.org/img/javacord3_banner.png)
+
+<img align="right" src="https://i.imgur.com/3k1hgfo.gif" width=27%>
+
 # Javacord [![Latest version](https://shields.javacord.org/github/release/Javacord/Javacord.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/Javacord/Javacord/releases/latest) [![Latest JavaDocs](https://shields.javacord.org/badge/JavaDoc-Latest-yellow.svg?style=flat-square)](https://docs.javacord.org/api/v/latest/) [![Javacord Wiki](https://shields.javacord.org/badge/Wiki-Home-red.svg?style=flat-square)](https://javacord.org/wiki/) [![Javacord Discord server](https://shields.javacord.org/discord/151037561152733184.svg?colorB=%237289DA&label=Discord&style=flat-square)](https://discord.gg/0qJ2jjyneLEgG7y3)
 
 An easy to use multithreaded library for creating Discord bots in Java. 
 
 ## Basic usage
-
-<img align="right" src="https://i.imgur.com/3k1hgfo.gif" width=27%>
 
 ```java
 public class MyFirstBot {
