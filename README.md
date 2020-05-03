@@ -91,10 +91,6 @@ Javacord's Discord community is an excellent resource if you have questions abou
 
 * **[Creating a Bot User Account](https://javacord.org/wiki/essential-knowledge/creating-a-bot-account/)**
 
-## 😎 Discord Server
-
-Join the [Javacord Server](https://discord.gg/0qJ2jjyneLEgG7y3) for support, status updates, or just chatting with other users.
-
 ## 📋 Version numbers
 
 The version number has a 3-digit format: `major.minor.trivial`
