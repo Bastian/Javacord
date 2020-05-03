@@ -115,7 +115,7 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 
 ## 🙌 More examples 
 
-### 🎵 Play a song from YouTube 
+### Play a song from YouTube 🎵
 
 ```java
 
