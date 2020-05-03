@@ -115,7 +115,6 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 ### Play a song from YouTube 🎵
 
 ```java
-
 api.addMessageCreateListener(event -> {
     if (!event.isServerMessage()) { // Ignore direct messages
         return;
@@ -196,6 +195,24 @@ public class MyListener implements MessageCreateListener {
 ```
 ```java
 api.addListener(new MyListener());
+```
+
+### Attach listeners to objects 📌
+
+You can even attach listeners to objects. E.g. let's say you have a very sensible bot. As soon as someone reacts with a 👎 within the first 30 minutes of creation, it deletes its own message:
+
+```java
+api.addMessageCreateListener(event -> {
+  if (event.getMessageContent().equalsIgnoreCase("!ping")) {
+    event.getChannel().sendMessage("Pong!").thenAccept(message -> {
+      message.addReactionAddListener(reactionEvent -> {
+        if (reactionEvent.getEmoji().equalsEmoji("👎")) {
+          reactionEvent.deleteMessage();
+        }
+      }).removeAfter(30, TimeUnit.MINUTES);
+    });
+  }
+}
 ```
 
 ## 📃 License
