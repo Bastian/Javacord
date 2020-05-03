@@ -156,6 +156,27 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
+### Using the MessageBuilder 🛠
+
+<img align="right" src="https://i.imgur.com/AP1cjDf.png" width="35%">
+
+The following example uses the built-in `MessageBuilder`. It is very useful to construct complex messages with images, code-blocks, embeds, or attachments.
+
+```java
+new MessageBuilder()
+  .append("Look at these ")
+  .append("awesome", MessageDecoration.BOLD, MessageDecoration.UNDERLINE)
+  .append(" animal pictures! 😃")
+  .appendCode("java", "System.out.println(\"Sweet!\");")
+  .addAttachment(new File("C:/Users/Bastian/Pictures/kitten.jpg"))
+  .addAttachment(new File("C:/Users/Bastian/Pictures/puppy.jpg"))
+  .setEmbed(new EmbedBuilder()
+        .setTitle("WOW")
+        .setDescription("Really cool pictures!")
+        .setColor(Color.ORANGE))
+  .send(channel);
+```
+
 ## 📃 License
 
 Javacord is distributed under the [Apache license version 2.0](./LICENSE).
