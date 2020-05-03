@@ -33,7 +33,7 @@ public class MyFirstBot {
 }
 ```
 
-<img src="https://i.imgur.com/VP4eU4a.gif" width="200px"> 
+<img src="https://i.imgur.com/8l2ZhO0.gif" width="100%"> 
 
 More sophisticated examples can be found at the [end of the README](#-more-examples). 
 You can also check out the [Example Bot](https://github.com/Javacord/Example-Bot) for a fully functional bot.
