@@ -4,8 +4,6 @@
 
 An easy to use multithreaded library for creating Discord bots in Java.
 
-Discord bots are 
-
 ## 🎉 Basic usage
 
 <img align="right" src="https://i.imgur.com/q8rsAhL.gif" width="20.5%">
