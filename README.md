@@ -111,6 +111,14 @@ best to deprecate it before removing it. We are unable to guarantee this though,
 something due to changes made by Discord, which we are unable to control. Usually you can expect a deprecated method or
 class to stay for at least 6 months before it finally gets removed, but this is not guaranteed.
 
+## 🥇 Large bots using Javacord
+
+Javacord is used by many large bots. Here are just a few of them:
+* [**Yunite**](https://yunite.xyz/): A bot for Fortnite which runs on over 30,000 servers with over a million users
+* **TODO** ...
+
+If you own a large bot that uses Javacord, feel free to add it to the list in a pull request!
+
 ## 🙌 More examples 
 
 ### Play a song from YouTube 🎵
