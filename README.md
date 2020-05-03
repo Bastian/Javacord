@@ -234,7 +234,7 @@ api.addMessageCreateListener(event -> {
 }
 ```
 
-### Creating a temporary voice channel 🎧
+### Creating a temporary voice channel 💣🎧
 
 This example creates a temporary voice channel that gets deleted when the last user leaves it or if noone joins it within the first 30 seconds after creation.
 
