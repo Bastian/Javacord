@@ -115,7 +115,7 @@ class to stay for at least 6 months before it finally gets removed, but this is 
 ## 🥇 Large bots using Javacord
 
 Javacord is used by many large bots. Here are just a few of them:
-* [**Yunite**](https://yunite.xyz/): A bot for Fortnite which runs on over 30,000 servers with over a million users
+* [**Yunite**](https://yunite.xyz/): A bot for Fortnite which runs on over 30,000 servers with over five million users
 * **TODO** ...
 
 If you own a large bot that uses Javacord, feel free to add it to the list in a pull request!
