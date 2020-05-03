@@ -182,10 +182,6 @@ new MessageBuilder()
 All the previous examples used inline listeners for similicity. For better readability it is also possible to have listeners in their own class:
 
 ```java
-api.addListener(new MyListener());
-```
-and
-```java
 public class MyListener implements MessageCreateListener {
 
     @Override
@@ -197,6 +193,10 @@ public class MyListener implements MessageCreateListener {
     }
 
 }
+```
+and
+```java
+api.addListener(new MyListener());
 ```
 
 ## 📃 License
