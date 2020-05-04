@@ -136,13 +136,8 @@ api.addMessageCreateListener(event -> {
         return;
     }
   
-    if (event.getMessageAuthor().isUser()) { // Ignore message authors that are no users (e.g., webhooks)
-        return;
-    }
-  
-    User author = event.getMessageAuthor().asUser().orElseThrow(AssertionError::new);
     ServerTextChannel textChannel = event.getServerTextChannel().orElseThrow(AssertionError::new);
-    ServerVoiceChannel voiceChannel = author.getConnectedVoiceChannel(channel.getServer()).orElse(null);
+    ServerVoiceChannel voiceChannel = event.getMessageAuthor().getConnectedVoiceChannel().orElse(null);
 
     // Make sure that the user (that has typed the command) is in a voice channel
     if (voiceChannel == null) {
