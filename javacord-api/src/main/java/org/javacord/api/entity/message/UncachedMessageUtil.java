@@ -2,7 +2,6 @@ package org.javacord.api.entity.message;
 
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.message.UncachedMessageAttachableListenerManager;
 
 import java.util.List;

@@ -14,7 +14,6 @@ import org.javacord.api.event.channel.server.ServerChannelCreateEvent;
 import org.javacord.api.event.channel.user.PrivateChannelCreateEvent;
 import org.javacord.core.entity.channel.GroupChannelImpl;
 import org.javacord.core.entity.server.ServerImpl;
-import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.event.channel.group.GroupChannelCreateEventImpl;
 import org.javacord.core.event.channel.server.ServerChannelCreateEventImpl;
 import org.javacord.core.event.channel.user.PrivateChannelCreateEventImpl;

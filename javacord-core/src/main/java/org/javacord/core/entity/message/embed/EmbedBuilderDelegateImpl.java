@@ -8,7 +8,6 @@ import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EditableEmbedField;
 import org.javacord.api.entity.message.embed.EmbedField;
 import org.javacord.api.entity.message.embed.internal.EmbedBuilderDelegate;
-import org.javacord.api.entity.user.User;
 import org.javacord.core.util.FileContainer;
 import org.javacord.core.util.io.FileUtils;
 

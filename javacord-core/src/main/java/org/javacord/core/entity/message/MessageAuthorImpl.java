@@ -6,7 +6,6 @@ import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
-import org.javacord.core.entity.user.UserImpl;
 
 import java.util.Objects;
 import java.util.Optional;

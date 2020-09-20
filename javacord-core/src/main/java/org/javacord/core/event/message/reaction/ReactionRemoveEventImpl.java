@@ -3,7 +3,6 @@ package org.javacord.core.event.message.reaction;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.Emoji;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.reaction.ReactionRemoveEvent;
 
 /**

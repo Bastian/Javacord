@@ -13,7 +13,6 @@ import org.javacord.api.entity.server.ExplicitContentFilterLevel;
 import org.javacord.api.entity.server.MultiFactorAuthenticationLevel;
 import org.javacord.api.entity.server.ServerFeature;
 import org.javacord.api.entity.server.VerificationLevel;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.ServerChangeAfkChannelEvent;
 import org.javacord.api.event.server.ServerChangeAfkTimeoutEvent;
 import org.javacord.api.event.server.ServerChangeBoostCountEvent;

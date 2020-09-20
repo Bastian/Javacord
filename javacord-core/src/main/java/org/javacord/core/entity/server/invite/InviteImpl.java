@@ -10,7 +10,6 @@ import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.Invite;
 import org.javacord.api.entity.server.invite.RichInvite;
-import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.IconImpl;
 import org.javacord.core.util.logging.LoggerUtil;

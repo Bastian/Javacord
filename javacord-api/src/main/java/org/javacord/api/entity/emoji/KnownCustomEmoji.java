@@ -3,7 +3,6 @@ package org.javacord.api.entity.emoji;
 import org.javacord.api.entity.UpdatableFromCache;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.server.emoji.KnownCustomEmojiAttachableListenerManager;
 
 import java.util.Collection;

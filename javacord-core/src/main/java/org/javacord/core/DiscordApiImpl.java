@@ -31,7 +31,8 @@ import org.javacord.api.entity.message.MessageSet;
 import org.javacord.api.entity.message.UncachedMessageUtil;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.Invite;
-import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.user.Member;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.GloballyAttachableListener;
@@ -51,7 +52,6 @@ import org.javacord.core.entity.message.MessageSetImpl;
 import org.javacord.core.entity.message.UncachedMessageUtilImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.entity.server.invite.InviteImpl;
-import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.entity.webhook.WebhookImpl;
 import org.javacord.core.util.ClassHelper;
 import org.javacord.core.util.Cleanupable;
@@ -262,7 +262,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     /**
      * The user of the connected account.
      */
-    private volatile User you;
+    private volatile User2 you;
 
     /**
      * The client id of the application.
@@ -280,26 +280,14 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     private volatile Long timeOffset = null;
 
     /**
-     * A map which contains all users.
-     */
-    private final Map<Long, WeakReference<User>> users = Collections.synchronizedMap(new ConcurrentHashMap<>());
-
-    /**
-     * A map to retrieve user IDs by the weak ref that point to the respective
-     * user or used to point to it for usage in the users cleanup,
-     * as at cleanup time the weak ref is already emptied.
-     */
-    private final Map<Reference<? extends User>, Long> userIdByRef = Collections.synchronizedMap(new WeakHashMap<>());
-
-    /**
-     * The queue that is notified if a user became weakly-reachable.
-     */
-    private final ReferenceQueue<User> usersCleanupQueue = new ReferenceQueue<>();
-
-    /**
      * An immutable cache with all Javacord entities.
      */
     private final AtomicReference<JavacordEntityCache> entityCache = new AtomicReference<>(JavacordEntityCache.empty());
+
+    /**
+     * Whether the user cache is enabled or not.
+     */
+    private final boolean userCacheEnabled;
 
     /**
      * A map which contains all servers that are ready.
@@ -602,22 +590,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
             // After minimum JDK 9 is required this can be switched to use a Cleaner
             getThreadPool().getScheduler().scheduleWithFixedDelay(() -> {
                 try {
-                    for (Reference<? extends User> userRef = usersCleanupQueue.poll();
-                            userRef != null;
-                            userRef = usersCleanupQueue.poll()) {
-                        Long userId = userIdByRef.remove(userRef);
-                        if (userId != null) {
-                            users.remove(userId, userRef);
-                        }
-                    }
-                } catch (Throwable t) {
-                    logger.error("Failed to process users cleanup queue!", t);
-                }
-            }, 30, 30, TimeUnit.SECONDS);
-
-            // After minimum JDK 9 is required this can be switched to use a Cleaner
-            getThreadPool().getScheduler().scheduleWithFixedDelay(() -> {
-                try {
                     for (Reference<? extends Message> messageRef = messagesCleanupQueue.poll();
                             messageRef != null;
                             messageRef = messagesCleanupQueue.poll()) {
@@ -703,15 +675,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      * This method is only meant to be called after receiving a READY packet.
      */
     public void purgeCache() {
-        synchronized (users) {
-            users.values().stream()
-                    .map(Reference::get)
-                    .filter(Objects::nonNull)
-                    .map(Cleanupable.class::cast)
-                    .forEach(Cleanupable::cleanup);
-            users.clear();
-        }
-        userIdByRef.clear();
         servers.values().stream()
                 .map(Cleanupable.class::cast)
                 .forEach(Cleanupable::cleanup);
@@ -844,25 +807,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     }
 
     /**
-     * Adds the given user to the cache.
-     *
-     * @param user The user to add.
-     */
-    public void addUserToCache(User user) {
-        users.compute(user.getId(), (key, value) -> {
-            Optional.ofNullable(value)
-                    .map(Reference::get)
-                    .filter(oldUser -> oldUser != user)
-                    .map(Cleanupable.class::cast)
-                    .ifPresent(Cleanupable::cleanup);
-
-            WeakReference<User> result = new WeakReference<>(user, usersCleanupQueue);
-            userIdByRef.put(result, key);
-            return result;
-        });
-    }
-
-    /**
      * Adds a channel to the cache.
      *
      * @param channel The channel to add.
@@ -892,6 +836,42 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
                 ((Cleanupable) channel).cleanup();
             }
             return cache.updateChannelCache(channelCache -> channelCache.removeChannel(channel));
+        });
+    }
+
+    /**
+     * Adds a member to the cache.
+     *
+     * @param member The member to add.
+     */
+    public void addMemberToCache(Member member) {
+        entityCache.getAndUpdate(cache -> {
+            Member oldMember = cache.getMemberCache()
+                    .getMemberByIdAndServer(member.getId(), member.getServer().getId())
+                    .orElse(null);
+            if (oldMember != member && oldMember instanceof Cleanupable) {
+                ((Cleanupable) oldMember).cleanup();
+            }
+            return cache.updateMemberCache(memberCache -> memberCache.addMember(member));
+        });
+    }
+
+    /**
+     * Removes a member from the cache.
+     *
+     * @param memberId The id of the member to remove.
+     * @param serverId The id of the member's server.
+     */
+    public void removeMemberFromCache(long memberId, long serverId) {
+        entityCache.getAndUpdate(cache -> {
+            Member member = cache.getMemberCache().getMemberByIdAndServer(memberId, serverId).orElse(null);
+            if (member == null) {
+                return cache;
+            }
+            if (member instanceof Cleanupable) {
+                ((Cleanupable) member).cleanup();
+            }
+            return cache.updateMemberCache(memberCache -> memberCache.removeMember(member));
         });
     }
 
@@ -936,7 +916,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      *
      * @param yourself The user of the connected account.
      */
-    public void setYourself(User yourself) {
+    public void setYourself(User2 yourself) {
         you = yourself;
     }
 
@@ -957,24 +937,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      */
     public void setTimeOffset(Long timeOffset) {
         this.timeOffset = timeOffset;
-    }
-
-    /**
-     * Gets a user or creates a new one from the given data.
-     *
-     * @param data The json data of the user.
-     * @return The user.
-     */
-    public User getOrCreateUser(JsonNode data) {
-        long id = Long.parseLong(data.get("id").asText());
-        synchronized (users) {
-            return getCachedUserById(id).orElseGet(() -> {
-                if (!data.has("username")) {
-                    throw new IllegalStateException("Couldn't get or created user. Please inform the developer!");
-                }
-                return new UserImpl(this, data);
-            });
-        }
     }
 
     /**
@@ -1471,7 +1433,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     }
 
     @Override
-    public User getYourself() {
+    public User2 getYourself() {
         return you;
     }
 

@@ -7,7 +7,6 @@ import org.javacord.api.entity.Permissionable;
 import org.javacord.api.entity.UpdatableFromCache;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.ServerUpdater;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.server.role.RoleAttachableListenerManager;
 
 import java.awt.Color;

@@ -14,7 +14,7 @@ import org.javacord.api.entity.message.Messageable;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.message.internal.MessageBuilderDelegate;
 import org.javacord.api.entity.message.mention.AllowedMentions;
-import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.user.Member;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.message.embed.EmbedBuilderDelegateImpl;
 import org.javacord.core.entity.message.mention.AllowedMentionsImpl;
@@ -275,6 +275,8 @@ public class MessageBuilderDelegateImpl implements MessageBuilderDelegate {
             return send((TextChannel) messageable);
         } else if (messageable instanceof User) {
             return ((User) messageable).openPrivateChannel().thenCompose(this::send);
+        } else if (messageable instanceof Member) {
+            return send(((Member) messageable).getUser());
         }
         throw new IllegalStateException("Messageable of unknown type");
     }

@@ -2,7 +2,6 @@ package org.javacord.api.entity.message;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.emoji.Emoji;
-import org.javacord.api.entity.user.User;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

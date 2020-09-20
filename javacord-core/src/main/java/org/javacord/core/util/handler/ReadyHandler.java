@@ -7,6 +7,7 @@ import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.core.entity.channel.GroupChannelImpl;
 import org.javacord.core.entity.channel.PrivateChannelImpl;
 import org.javacord.core.entity.server.ServerImpl;
+import org.javacord.core.entity.user.User2Impl;
 import org.javacord.core.util.gateway.PacketHandler;
 import org.javacord.core.util.logging.LoggerUtil;
 
@@ -60,7 +61,7 @@ public class ReadyHandler extends PacketHandler {
             }
         }
 
-        api.setYourself(api.getOrCreateUser(packet.get("user")));
+        api.setYourself(new User2Impl(api, packet.get("user")));
     }
 
 }

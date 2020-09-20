@@ -3,7 +3,6 @@ package org.javacord.core.entity.server;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.entity.server.Ban;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 
 import java.util.Optional;

@@ -15,7 +15,6 @@ import org.javacord.api.entity.server.ExplicitContentFilterLevel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.VerificationLevel;
 import org.javacord.api.entity.server.internal.ServerUpdaterDelegate;
-import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.util.FileContainer;
 import org.javacord.core.util.rest.RestEndpoint;

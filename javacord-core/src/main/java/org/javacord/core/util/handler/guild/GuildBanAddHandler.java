@@ -2,7 +2,6 @@ package org.javacord.core.util.handler.guild;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberBanEvent;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.event.server.member.ServerMemberBanEventImpl;

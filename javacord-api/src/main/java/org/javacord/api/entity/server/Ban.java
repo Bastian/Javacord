@@ -1,7 +1,5 @@
 package org.javacord.api.entity.server;
 
-import org.javacord.api.entity.user.User;
-
 import java.util.Optional;
 
 /**

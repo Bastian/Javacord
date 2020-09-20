@@ -7,10 +7,12 @@ import java.util.function.UnaryOperator;
  */
 public class JavacordEntityCache {
 
-    private static final JavacordEntityCache EMPTY_CACHE = new JavacordEntityCache(ChannelCache.empty());
+    private static final JavacordEntityCache EMPTY_CACHE = new JavacordEntityCache(
+            ChannelCache.empty(), MemberCache.empty());
 
     private final ChannelCache channelCache;
-
+    private final MemberCache memberCache;
+    
     /**
      * Gets an empty Javacord cache.
      *
@@ -20,8 +22,9 @@ public class JavacordEntityCache {
         return EMPTY_CACHE;
     }
 
-    private JavacordEntityCache(ChannelCache channelCache) {
+    private JavacordEntityCache(ChannelCache channelCache, MemberCache memberCache) {
         this.channelCache = channelCache;
+        this.memberCache = memberCache;
     }
 
     /**
@@ -40,7 +43,7 @@ public class JavacordEntityCache {
      * @return The new Javacord entity cache.
      */
     public JavacordEntityCache updateChannelCache(UnaryOperator<ChannelCache> mapper) {
-        return new JavacordEntityCache(mapper.apply(channelCache));
+        return setChannelCache(mapper.apply(channelCache));
     }
 
     /**
@@ -50,6 +53,35 @@ public class JavacordEntityCache {
      * @return The new Javacord entity cache.
      */
     public JavacordEntityCache setChannelCache(ChannelCache channelCache) {
-        return new JavacordEntityCache(channelCache);
+        return new JavacordEntityCache(channelCache, memberCache);
+    }
+
+    /**
+     * Gets the member cache.
+     *
+     * @return The member cache.
+     */
+    public MemberCache getMemberCache() {
+        return memberCache;
+    }
+
+    /**
+     * Updates the member cache.
+     *
+     * @param mapper A function that takes the old member cache and returns the new one.
+     * @return The new Javacord entity cache.
+     */
+    public JavacordEntityCache updateMemberCache(UnaryOperator<MemberCache> mapper) {
+        return setMemberCache(mapper.apply(memberCache));
+    }
+
+    /**
+     * Sets the member cache.
+     *
+     * @param memberCache The member cache to set.
+     * @return The new Javacord entity cache.
+     */
+    public JavacordEntityCache setMemberCache(MemberCache memberCache) {
+        return new JavacordEntityCache(channelCache, memberCache);
     }
 }

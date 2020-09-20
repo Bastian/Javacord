@@ -1,7 +1,6 @@
 package org.javacord.core.event.server.role;
 
 import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.role.UserRoleRemoveEvent;
 
 /**

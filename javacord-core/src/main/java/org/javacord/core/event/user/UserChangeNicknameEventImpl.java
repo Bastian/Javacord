@@ -1,7 +1,6 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 
 import java.util.Optional;

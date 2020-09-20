@@ -7,7 +7,6 @@ import org.javacord.api.Javacord;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.channel.GroupChannel;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.util.cache.MessageCache;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.IconImpl;

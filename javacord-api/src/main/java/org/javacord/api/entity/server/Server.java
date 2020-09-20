@@ -26,7 +26,8 @@ import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.permission.RoleBuilder;
 import org.javacord.api.entity.server.invite.RichInvite;
-import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.user.Member;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.server.ServerAttachableListenerManager;
 
@@ -39,7 +40,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -164,8 +164,12 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param user The user to check.
      * @return The nickname of the user.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#getNickname()}.
      */
-    Optional<String> getNickname(User user);
+    @Deprecated
+    default Optional<String> getNickname(User2 user) {
+        return getMemberById(user.getId()).flatMap(Member::getNickname);
+    }
 
     /**
      * Gets your self-muted state.
@@ -181,16 +185,22 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param userId The id of the user to check.
      * @return Whether the user with the given id is self-muted.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfMuted()}.
      */
-    boolean isSelfMuted(long userId);
+    @Deprecated
+    default boolean isSelfMuted(long userId) {
+        return getMemberById(userId).map(Member::isSelfMuted).orElse(false);
+    }
 
     /**
      * Gets the self-muted state of the given user.
      *
      * @param user The user to check.
      * @return Whether the given user is self-muted.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfMuted()}.
      */
-    default boolean isSelfMuted(User user) {
+    @Deprecated
+    default boolean isSelfMuted(User2 user) {
         return isSelfMuted(user.getId());
     }
 
@@ -208,16 +218,22 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param userId The id of the user to check.
      * @return Whether the user with the given id is self-deafened.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfDeafened()}.
      */
-    boolean isSelfDeafened(long userId);
+    @Deprecated
+    default boolean isSelfDeafened(long userId) {
+        return getMemberById(userId).map(Member::isSelfDeafened).orElse(false);
+    }
 
     /**
      * Gets the self-deafened state of the given user.
      *
      * @param user The user to check.
      * @return Whether the given user is self-deafened.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfDeafened()}.
      */
-    default boolean isSelfDeafened(User user) {
+    @Deprecated
+    default boolean isSelfDeafened(User2 user) {
         return isSelfDeafened(user.getId());
     }
 
@@ -281,9 +297,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param user The user.
      * @return The display name of the user on this server.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#getDisplayName()}.
      */
-    default String getDisplayName(User user) {
-        return user.getDisplayName(this);
+    @Deprecated
+    default String getDisplayName(User2 user) {
+        return getMemberById(user.getId()).map(Member::getDisplayName).orElse(user.getName());
     }
 
     /**
@@ -291,8 +309,12 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param user The user to check.
      * @return The timestamp of when the user joined the server.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#getJoinedAtTimestamp()}.
      */
-    Optional<Instant> getJoinedAtTimestamp(User user);
+    @Deprecated
+    default Optional<Instant> getJoinedAtTimestamp(User2 user) {
+        return getMemberById(user.getId()).map(Member::getJoinedAtTimestamp);
+    }
 
     /**
      * Checks if the server is considered large.
@@ -425,7 +447,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @return A collection with all members of the server.
      */
-    Collection<User> getMembers();
+    Collection<Member> getMembers();
 
     /**
      * Gets a member by its id.
@@ -433,7 +455,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param id The id of the member.
      * @return The member with the given id.
      */
-    Optional<User> getMemberById(long id);
+    Optional<Member> getMemberById(long id);
 
     /**
      * Gets a member by its id.
@@ -441,7 +463,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param id The id of the member.
      * @return The member with the given id.
      */
-    default Optional<User> getMemberById(String id) {
+    default Optional<Member> getMemberById(String id) {
         try {
             return getMemberById(Long.parseLong(id));
         } catch (NumberFormatException e) {
@@ -456,7 +478,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param discriminatedName The discriminated name of the member.
      * @return The member with the given discriminated name.
      */
-    default Optional<User> getMemberByDiscriminatedName(String discriminatedName) {
+    default Optional<Member> getMemberByDiscriminatedName(String discriminatedName) {
         String[] nameAndDiscriminator = discriminatedName.split("#", 2);
         return (nameAndDiscriminator.length > 1)
             ? getMemberByNameAndDiscriminator(nameAndDiscriminator[0], nameAndDiscriminator[1])
@@ -470,7 +492,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param discriminatedName The discriminated name of the member.
      * @return The member with the given discriminated name.
      */
-    default Optional<User> getMemberByDiscriminatedNameIgnoreCase(String discriminatedName) {
+    default Optional<Member> getMemberByDiscriminatedNameIgnoreCase(String discriminatedName) {
         String[] nameAndDiscriminator = discriminatedName.split("#", 2);
         return (nameAndDiscriminator.length > 1)
             ? getMemberByNameAndDiscriminatorIgnoreCase(nameAndDiscriminator[0], nameAndDiscriminator[1])
@@ -485,9 +507,10 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param discriminator The discriminator of the member.
      * @return The member with the given name and discriminator.
      */
-    default Optional<User> getMemberByNameAndDiscriminator(String name, String discriminator) {
+    default Optional<Member> getMemberByNameAndDiscriminator(String name, String discriminator) {
+        // TODO Utilize cache indices for O(1)
         return getMembersByName(name).stream()
-                .filter(user -> user.getDiscriminator().equals(discriminator))
+                .filter(member -> member.getUser().getDiscriminator().equals(discriminator))
                 .findAny();
     }
 
@@ -499,9 +522,10 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param discriminator The discriminator of the member.
      * @return The member with the given name and discriminator.
      */
-    default Optional<User> getMemberByNameAndDiscriminatorIgnoreCase(String name, String discriminator) {
+    default Optional<Member> getMemberByNameAndDiscriminatorIgnoreCase(String name, String discriminator) {
+        // TODO Utilize cache indices for O(1)
         return getMembersByNameIgnoreCase(name).stream()
-                .filter(user -> user.getDiscriminator().equalsIgnoreCase(discriminator))
+                .filter(member -> member.getUser().getDiscriminator().equalsIgnoreCase(discriminator))
                 .findAny();
     }
 
@@ -512,10 +536,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param name The name of the members.
      * @return A collection with all members with the given name.
      */
-    default Collection<User> getMembersByName(String name) {
+    default Collection<Member> getMembersByName(String name) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getName().equals(name))
+                        .filter(member -> member.getUser().getName().equals(name))
                         .collect(Collectors.toList()));
     }
 
@@ -526,10 +551,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param name The name of the members.
      * @return A collection with all members with the given name.
      */
-    default Collection<User> getMembersByNameIgnoreCase(String name) {
+    default Collection<Member> getMembersByNameIgnoreCase(String name) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getName().equalsIgnoreCase(name))
+                        .filter(member -> member.getUser().getName().equalsIgnoreCase(name))
                         .collect(Collectors.toList()));
     }
 
@@ -540,10 +566,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param nickname The nickname of the members.
      * @return A collection with all members with the given nickname on this server.
      */
-    default Collection<User> getMembersByNickname(String nickname) {
+    default Collection<Member> getMembersByNickname(String nickname) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getNickname(this).map(nickname::equals).orElse(false))
+                        .filter(member -> member.getNickname().map(nickname::equals).orElse(false))
                         .collect(Collectors.toList()));
     }
 
@@ -554,10 +581,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param nickname The nickname of the members.
      * @return A collection with all members with the given nickname on this server.
      */
-    default Collection<User> getMembersByNicknameIgnoreCase(String nickname) {
+    default Collection<Member> getMembersByNicknameIgnoreCase(String nickname) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getNickname(this).map(nickname::equalsIgnoreCase).orElse(false))
+                        .filter(member -> member.getNickname().map(nickname::equalsIgnoreCase).orElse(false))
                         .collect(Collectors.toList()));
     }
 
@@ -568,10 +596,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param displayName The display name of the members.
      * @return A collection with all members with the given display name on this server.
      */
-    default Collection<User> getMembersByDisplayName(String displayName) {
+    default Collection<Member> getMembersByDisplayName(String displayName) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getDisplayName(this).equals(displayName))
+                        .filter(member -> member.getDisplayName().equals(displayName))
                         .collect(Collectors.toList()));
     }
 
@@ -582,10 +611,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param displayName The display name of the members.
      * @return A collection with all members with the given display name on this server.
      */
-    default Collection<User> getMembersByDisplayNameIgnoreCase(String displayName) {
+    default Collection<Member> getMembersByDisplayNameIgnoreCase(String displayName) {
+        // TODO Utilize cache indices for O(1)
         return Collections.unmodifiableList(
                 getMembers().stream()
-                        .filter(user -> user.getDisplayName(this).equalsIgnoreCase(displayName))
+                        .filter(member -> member.getDisplayName().equalsIgnoreCase(displayName))
                         .collect(Collectors.toList()));
     }
 
@@ -595,7 +625,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param user The user to check.
      * @return If the user is a member of this server.
      */
-    boolean isMember(User user);
+    boolean isMember(User2 user);
 
     /**
      * Gets a sorted list (by position) with all roles of the server.
@@ -609,12 +639,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param user The user.
      * @return A sorted list (by position) with all roles of the user in the server.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#getRoles()}.
      */
-    default List<Role> getRoles(User user) {
-        return Collections.unmodifiableList(
-                getRoles().stream()
-                        .filter(role -> role.hasUser(user))
-                        .collect(Collectors.toList()));
+    @Deprecated
+    default List<Role> getRoles(User2 user) {
+        return getMemberById(user.getId()).map(Member::getRoles).orElse(Collections.emptyList());
     }
 
     /**
@@ -681,12 +710,11 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @param user The user.
      * @return The color.
+     * @deprecated Use {@link #getMemberById(long)} and {@link Member#getRoleColor()}.
      */
-    default Optional<Color> getRoleColor(User user) {
-        return user.getRoles(this).stream()
-                   .filter(role -> role.getColor().isPresent())
-                   .max(Comparator.comparingInt(Role::getRawPosition))
-                   .flatMap(Role::getColor);
+    @Deprecated
+    default Optional<Color> getRoleColor(User2 user) {
+        return getMemberById(user.getId()).flatMap(Member::getRoleColor);
     }
 
     /**

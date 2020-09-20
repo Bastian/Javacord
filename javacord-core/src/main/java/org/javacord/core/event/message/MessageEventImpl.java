@@ -8,7 +8,6 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageEvent;
 import org.javacord.core.entity.emoji.UnicodeEmojiImpl;
 import org.javacord.core.event.EventImpl;

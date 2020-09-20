@@ -3,7 +3,6 @@ package org.javacord.api.event.message;
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.channel.TextChannelEvent;
 
 import java.util.Optional;

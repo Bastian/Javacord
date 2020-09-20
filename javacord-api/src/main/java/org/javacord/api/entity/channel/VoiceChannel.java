@@ -1,7 +1,6 @@
 package org.javacord.api.entity.channel;
 
 import org.javacord.api.entity.permission.PermissionType;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.VoiceChannelAttachableListenerManager;
 
 import java.util.NoSuchElementException;

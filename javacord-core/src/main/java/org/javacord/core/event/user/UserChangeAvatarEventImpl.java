@@ -1,9 +1,7 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.Icon;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.user.UserChangeAvatarEvent;
-import org.javacord.core.entity.user.UserImpl;
 
 /**
  * The implementation of {@link UserChangeAvatarEvent}.

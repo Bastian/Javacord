@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.permission.Permissions;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.role.RoleChangeColorEvent;
 import org.javacord.api.event.server.role.RoleChangeHoistEvent;
 import org.javacord.api.event.server.role.RoleChangeMentionableEvent;

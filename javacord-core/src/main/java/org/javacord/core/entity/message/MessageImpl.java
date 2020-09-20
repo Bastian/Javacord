@@ -14,7 +14,6 @@ import org.javacord.api.entity.message.MessageType;
 import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.util.DiscordRegexPattern;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.emoji.UnicodeEmojiImpl;

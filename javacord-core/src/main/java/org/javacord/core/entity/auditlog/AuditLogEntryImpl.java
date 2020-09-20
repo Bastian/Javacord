@@ -17,7 +17,6 @@ import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.server.DefaultMessageNotificationLevel;
 import org.javacord.api.entity.server.ExplicitContentFilterLevel;
 import org.javacord.api.entity.server.VerificationLevel;
-import org.javacord.api.entity.user.User;
 import org.javacord.core.entity.IconImpl;
 import org.javacord.core.entity.permission.PermissionsImpl;
 import org.javacord.core.util.logging.LoggerUtil;

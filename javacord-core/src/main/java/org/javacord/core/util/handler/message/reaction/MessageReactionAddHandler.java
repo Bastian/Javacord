@@ -6,7 +6,6 @@ import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.reaction.ReactionAddEvent;
 import org.javacord.core.entity.emoji.UnicodeEmojiImpl;
 import org.javacord.core.entity.message.MessageImpl;

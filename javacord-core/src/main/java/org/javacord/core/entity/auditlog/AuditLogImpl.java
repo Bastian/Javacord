@@ -5,7 +5,6 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.auditlog.AuditLog;
 import org.javacord.api.entity.auditlog.AuditLogEntry;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.webhook.WebhookImpl;

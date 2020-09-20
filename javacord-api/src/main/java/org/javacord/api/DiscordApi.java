@@ -23,7 +23,7 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.ServerBuilder;
 import org.javacord.api.entity.server.invite.Invite;
-import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.GloballyAttachableListenerManager;
@@ -300,7 +300,7 @@ public interface DiscordApi extends GloballyAttachableListenerManager {
      *
      * @return The user of the connected account.
      */
-    User getYourself();
+    User2 getYourself();
 
     /**
      * Gets the id of the application's owner.

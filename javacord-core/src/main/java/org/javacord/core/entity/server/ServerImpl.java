@@ -48,6 +48,7 @@ import org.javacord.core.entity.channel.ServerTextChannelImpl;
 import org.javacord.core.entity.channel.ServerVoiceChannelImpl;
 import org.javacord.core.entity.permission.RoleImpl;
 import org.javacord.core.entity.server.invite.InviteImpl;
+import org.javacord.core.entity.user.MemberImpl;
 import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.entity.webhook.WebhookImpl;
 import org.javacord.core.listener.server.InternalServerAttachableListenerManager;
@@ -61,8 +62,6 @@ import org.javacord.core.util.rest.RestRequestResult;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -197,26 +196,6 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     private final ConcurrentHashMap<Long, Role> roles = new ConcurrentHashMap<>();
 
     /**
-     * A map with all members of the server.
-     */
-    private final ConcurrentHashMap<Long, User> members = new ConcurrentHashMap<>();
-
-    /**
-     * A map with all nicknames. The key is the user id.
-     */
-    private final ConcurrentHashMap<Long, String> nicknames = new ConcurrentHashMap<>();
-
-    /**
-     * A set with all members that are self-muted.
-     */
-    private final Set<Long> selfMuted = new ConcurrentSkipListSet<>();
-
-    /**
-     * A set with all members that are self-deafened.
-     */
-    private final Set<Long> selfDeafened = new ConcurrentSkipListSet<>();
-
-    /**
      * A set with all members that are muted.
      */
     private final Set<Long> muted = new ConcurrentSkipListSet<>();
@@ -225,11 +204,6 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
      * A set with all members that are deafened.
      */
     private final Set<Long> deafened = new ConcurrentSkipListSet<>();
-
-    /**
-     * A map with all joinedAt instants. The key is the user id.
-     */
-    private final ConcurrentHashMap<Long, Instant> joinedAtTimestamps = new ConcurrentHashMap<>();
 
     /**
      * A list with all custom emojis from this server.
@@ -765,27 +739,15 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
      * @param member The user to add.
      */
     public void addMember(JsonNode member) {
-        User user = api.getOrCreateUser(member.get("user"));
-        members.put(user.getId(), user);
-        if (member.hasNonNull("nick")) {
-            nicknames.put(user.getId(), member.get("nick").asText());
-        }
-        if (member.hasNonNull("mute")) {
-            setMuted(user.getId(), member.get("mute").asBoolean());
-        }
-        if (member.hasNonNull("deaf")) {
-            setDeafened(user.getId(), member.get("deaf").asBoolean());
-        }
+        api.addMemberToCache(new MemberImpl(api, this, member, null));
 
         for (JsonNode roleIds : member.get("roles")) {
             long roleId = Long.parseLong(roleIds.asText());
             getRoleById(roleId).map(role -> ((RoleImpl) role)).ifPresent(role -> role.addUserToCache(user));
         }
 
-        joinedAtTimestamps.put(user.getId(), OffsetDateTime.parse(member.get("joined_at").asText()).toInstant());
-
         synchronized (readyConsumers) {
-            if (!ready && members.size() == getMemberCount()) {
+            if (!ready && getMembers().size() == getMemberCount()) {
                 ready = true;
                 readyConsumers.forEach(consumer -> consumer.accept(this));
                 readyConsumers.clear();
@@ -798,44 +760,6 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
      */
     public void incrementMemberCount() {
         memberCount.incrementAndGet();
-    }
-
-    /**
-     * Sets the nickname of the user.
-     *
-     * @param user     The user.
-     * @param nickname The nickname to set.
-     */
-    public void setNickname(User user, String nickname) {
-        nicknames.compute(user.getId(), (key, value) -> nickname);
-    }
-
-    /**
-     * Sets the self-muted state of the user with the given id.
-     *
-     * @param userId The id of the user.
-     * @param muted  Whether the user with the given id is self-muted or not.
-     */
-    public void setSelfMuted(long userId, boolean muted) {
-        if (muted) {
-            selfMuted.add(userId);
-        } else {
-            selfMuted.remove(userId);
-        }
-    }
-
-    /**
-     * Sets the self-deafened state of the user with the given id.
-     *
-     * @param userId   The id of the user.
-     * @param deafened Whether the user with the given id is self-deafened or not.
-     */
-    public void setSelfDeafened(long userId, boolean deafened) {
-        if (deafened) {
-            selfDeafened.add(userId);
-        } else {
-            selfDeafened.remove(userId);
-        }
     }
 
     /**
@@ -1126,21 +1050,6 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     @Override
-    public Optional<String> getNickname(User user) {
-        return Optional.ofNullable(nicknames.get(user.getId()));
-    }
-
-    @Override
-    public boolean isSelfMuted(long userId) {
-        return selfMuted.contains(userId);
-    }
-
-    @Override
-    public boolean isSelfDeafened(long userId) {
-        return selfDeafened.contains(userId);
-    }
-
-    @Override
     public boolean isMuted(long userId) {
         return muted.contains(userId);
     }
@@ -1148,11 +1057,6 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     @Override
     public boolean isDeafened(long userId) {
         return deafened.contains(userId);
-    }
-
-    @Override
-    public Optional<Instant> getJoinedAtTimestamp(User user) {
-        return Optional.ofNullable(joinedAtTimestamps.get(user.getId()));
     }
 
     @Override

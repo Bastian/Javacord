@@ -11,7 +11,6 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.InviteBuilder;
 import org.javacord.api.entity.server.invite.RichInvite;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.server.ServerChannelAttachableListenerManager;
 
 import java.util.Arrays;

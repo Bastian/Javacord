@@ -3,7 +3,6 @@ package org.javacord.api.entity.auditlog;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 
 import java.util.Optional;

@@ -1,7 +1,5 @@
 package org.javacord.api.event.server;
 
-import org.javacord.api.entity.user.User;
-
 /**
  * A server change owner event.
  */

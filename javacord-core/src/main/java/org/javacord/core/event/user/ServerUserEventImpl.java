@@ -1,7 +1,6 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.event.user.TextChannelUserEvent;
 import org.javacord.api.event.user.UserEvent;
 import org.javacord.core.event.server.ServerEventImpl;

@@ -1,6 +1,5 @@
 package org.javacord.api.entity.channel;
 
-import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.user.PrivateChannelAttachableListenerManager;
 
 import java.util.NoSuchElementException;

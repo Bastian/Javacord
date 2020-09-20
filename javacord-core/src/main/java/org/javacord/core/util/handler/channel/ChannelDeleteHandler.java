@@ -16,7 +16,6 @@ import org.javacord.api.entity.channel.VoiceChannel;
 import org.javacord.api.event.channel.group.GroupChannelDeleteEvent;
 import org.javacord.api.event.channel.server.ServerChannelDeleteEvent;
 import org.javacord.api.event.channel.user.PrivateChannelDeleteEvent;
-import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.event.channel.group.GroupChannelDeleteEventImpl;
 import org.javacord.core.event.channel.server.ServerChannelDeleteEventImpl;
 import org.javacord.core.event.channel.user.PrivateChannelDeleteEventImpl;

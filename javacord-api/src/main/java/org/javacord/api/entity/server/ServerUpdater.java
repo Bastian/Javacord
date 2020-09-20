@@ -6,7 +6,6 @@ import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.internal.ServerUpdaterDelegate;
-import org.javacord.api.entity.user.User;
 import org.javacord.api.util.internal.DelegateFactory;
 
 import java.awt.image.BufferedImage;
