@@ -17,6 +17,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.Member;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.message.MessageAttachableListenerManager;
 import org.javacord.api.util.DiscordRegexPattern;
@@ -773,6 +774,16 @@ public interface Message extends DiscordEntity, Comparable<Message>, UpdatableFr
      * @return The user author of the message.
      */
     Optional<User> getUserAuthor();
+
+    /**
+     * Gets the member author of the message.
+     * The member author is not present, if it's a webhook or the message was not sent in a server.
+     *
+     * @return The member author of the message.
+     */
+    default Optional<Member> getMemberAuthor() {
+        return getAuthor().asMember();
+    }
 
     /**
      * Gets the author of the message.

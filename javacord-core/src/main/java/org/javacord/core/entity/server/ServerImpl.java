@@ -179,7 +179,7 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     /**
      * If the server is ready (all members are cached).
      */
-    private volatile boolean ready = false;
+    private volatile boolean ready;
 
     /**
      * A lock that is used ti prevent lock on {@code audioConnection} and {@code pendingAudioConnection}.
@@ -273,6 +273,7 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
      */
     public ServerImpl(DiscordApiImpl api, JsonNode data) {
         this.api = api;
+        ready = !api.hasUserCacheEnabled();
 
         id = Long.parseLong(data.get("id").asText());
         name = data.get("name").asText();
@@ -379,7 +380,11 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
             }
         }
 
-        if ((isLarge() || api.getAccountType() == AccountType.CLIENT) && getMembers().size() < getMemberCount()) {
+        if (
+                (isLarge() || api.getAccountType() == AccountType.CLIENT)
+                && getMembers().size() < getMemberCount()
+                && api.hasUserCacheEnabled()
+        ) {
             api.getWebSocketAdapter().queueRequestGuildMembers(this);
         }
 

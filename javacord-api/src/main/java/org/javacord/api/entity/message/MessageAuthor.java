@@ -8,6 +8,7 @@ import org.javacord.api.entity.Nameable;
 import org.javacord.api.entity.channel.Categorizable;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.Member;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 
@@ -598,11 +599,27 @@ public interface MessageAuthor extends DiscordEntity, Nameable {
      *
      * @return The author as user.
      */
-    default Optional<User> asUser() {
-        if (isUser()) {
-            return getApi().getCachedUserById(getId());
-        }
-        return Optional.empty();
+    Optional<User> asUser();
+
+    /**
+     * Gets the author as a member.
+     *
+     * <p>The returned optional is empty if the message was sent by a webhook or the message was not sent in a server.
+     *
+     * @return The author as a member.
+     */
+    Optional<Member> asMember();
+
+    /**
+     * Checks if the author is available as a member object
+     *
+     * <p>Please note, that {@link #isUser()} also returns {@code true} if this method returns {@code true}.
+     * The opposite might not be true.
+     *
+     * @return Whether the author is available as a member object or not.
+     */
+    default boolean isMember() {
+        return asMember().isPresent();
     }
 
     /**

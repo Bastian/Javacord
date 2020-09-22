@@ -208,4 +208,9 @@ public final class MemberImpl implements Member {
     public boolean isSelfDeafened() {
         return selfDeafened;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Member (id: %s, display name: %s)", getIdAsString(), getDisplayName());
+    }
 }

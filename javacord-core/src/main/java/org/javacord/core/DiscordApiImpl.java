@@ -288,7 +288,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     /**
      * Whether the user cache is enabled or not.
      */
-    private final boolean userCacheEnabled = true; // TODO
+    private final boolean userCacheEnabled;
 
     /**
      * A map which contains all servers that are ready.
@@ -510,6 +510,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
         this.proxyAuthenticator = proxyAuthenticator;
         this.trustAllCertificates = trustAllCertificates;
         this.intents = intents;
+        userCacheEnabled = intents.contains(Intent.GUILD_MEMBERS);
         this.reconnectDelayProvider = x ->
                 (int) Math.round(Math.pow(x, 1.5) - (1 / (1 / (0.1 * x) + 1)) * Math.pow(x, 1.5));
 
@@ -630,6 +631,15 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      */
     public AtomicReference<JavacordEntityCache> getEntityCache() {
         return entityCache;
+    }
+
+    /**
+     * Checks if the user cache is enabled.
+     *
+     * @return Whetehr or not teh user cache is enabled.
+     */
+    public boolean hasUserCacheEnabled() {
+        return userCacheEnabled;
     }
 
     /**

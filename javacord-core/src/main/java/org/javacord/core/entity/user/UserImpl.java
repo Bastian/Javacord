@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Maps a member object.
+ * Maps a user object.
  *
  * @see <a href="https://discord.com/developers/docs/resources/user#user-object">Discord Docs</a>
  */
