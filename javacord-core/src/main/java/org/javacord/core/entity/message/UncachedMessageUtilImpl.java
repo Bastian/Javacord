@@ -11,10 +11,10 @@ import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.UncachedMessageUtil;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.message.embed.EmbedBuilderDelegateImpl;
-import org.javacord.core.entity.user.User2Impl;
+import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.listener.message.InternalUncachedMessageAttachableListenerManager;
 import org.javacord.core.util.rest.RestEndpoint;
 import org.javacord.core.util.rest.RestMethod;
@@ -343,27 +343,27 @@ public class UncachedMessageUtilImpl implements UncachedMessageUtil, InternalUnc
     }
 
     @Override
-    public CompletableFuture<List<User2>> getUsersWhoReactedWithEmoji(long channelId, long messageId, Emoji emoji) {
-        CompletableFuture<List<User2>> future = new CompletableFuture<>();
+    public CompletableFuture<List<User>> getUsersWhoReactedWithEmoji(long channelId, long messageId, Emoji emoji) {
+        CompletableFuture<List<User>> future = new CompletableFuture<>();
         api.getThreadPool().getExecutorService().submit(() -> {
             try {
                 final String value = emoji.asUnicodeEmoji().orElseGet(() -> emoji.asCustomEmoji()
                         .map(CustomEmoji::getReactionTag).orElse("UNKNOWN"));
-                List<User2> users = new ArrayList<>();
+                List<User> users = new ArrayList<>();
                 boolean requestMore = true;
                 while (requestMore) {
-                    RestRequest<List<User2>> request =
-                            new RestRequest<List<User2>>(api, RestMethod.GET, RestEndpoint.REACTION)
+                    RestRequest<List<User>> request =
+                            new RestRequest<List<User>>(api, RestMethod.GET, RestEndpoint.REACTION)
                                     .setUrlParameters(
                                             Long.toUnsignedString(channelId), Long.toUnsignedString(messageId), value)
                                     .addQueryParameter("limit", "100");
                     if (!users.isEmpty()) {
                         request.addQueryParameter("after", users.get(users.size() - 1).getIdAsString());
                     }
-                    List<User2> incompleteUsers = request.execute(result -> {
-                        List<User2> paginatedUsers = new ArrayList<>();
+                    List<User> incompleteUsers = request.execute(result -> {
+                        List<User> paginatedUsers = new ArrayList<>();
                         for (JsonNode userJson : result.getJsonBody()) {
-                            paginatedUsers.add(new User2Impl(api, userJson));
+                            paginatedUsers.add(new UserImpl(api, userJson));
                         }
                         return Collections.unmodifiableList(paginatedUsers);
                     }).join();
@@ -379,11 +379,11 @@ public class UncachedMessageUtilImpl implements UncachedMessageUtil, InternalUnc
     }
 
     @Override
-    public CompletableFuture<List<User2>> getUsersWhoReactedWithEmoji(String channelId, String messageId, Emoji emoji) {
+    public CompletableFuture<List<User>> getUsersWhoReactedWithEmoji(String channelId, String messageId, Emoji emoji) {
         try {
             return getUsersWhoReactedWithEmoji(Long.parseLong(channelId), Long.parseLong(messageId), emoji);
         } catch (NumberFormatException e) {
-            CompletableFuture<List<User2>> future = new CompletableFuture<>();
+            CompletableFuture<List<User>> future = new CompletableFuture<>();
             future.completeExceptionally(e);
             return future;
         }

@@ -4,6 +4,7 @@ import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.channel.server.ServerChannelChangeOverwrittenPermissionsEvent;
 
 import java.util.Optional;

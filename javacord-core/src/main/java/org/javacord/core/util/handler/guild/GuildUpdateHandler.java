@@ -13,7 +13,7 @@ import org.javacord.api.entity.server.ExplicitContentFilterLevel;
 import org.javacord.api.entity.server.MultiFactorAuthenticationLevel;
 import org.javacord.api.entity.server.ServerFeature;
 import org.javacord.api.entity.server.VerificationLevel;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.ServerChangeAfkChannelEvent;
 import org.javacord.api.event.server.ServerChangeAfkTimeoutEvent;
 import org.javacord.api.event.server.ServerChangeBoostCountEvent;
@@ -159,7 +159,7 @@ public class GuildUpdateHandler extends PacketHandler {
             }
 
             long newOwnerId = packet.get("owner_id").asLong();
-            User2 oldOwner = server.getOwner();
+            User oldOwner = server.getOwner();
             if (newOwnerId != oldOwner.getId()) {
                 server.setOwnerId(newOwnerId);
                 ServerChangeOwnerEvent event = new ServerChangeOwnerEventImpl(server, newOwnerId, oldOwner);

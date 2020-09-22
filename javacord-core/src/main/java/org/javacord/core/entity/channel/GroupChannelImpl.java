@@ -7,9 +7,11 @@ import org.javacord.api.Javacord;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.channel.GroupChannel;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.util.cache.MessageCache;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.IconImpl;
+import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.listener.channel.group.InternalGroupChannelAttachableListenerManager;
 import org.javacord.core.util.Cleanupable;
 import org.javacord.core.util.cache.MessageCacheImpl;
@@ -75,7 +77,7 @@ public class GroupChannelImpl implements GroupChannel, Cleanupable, InternalText
         this.api = api;
 
         for (JsonNode recipientJson : data.get("recipients")) {
-            recipients.add(api.getOrCreateUser(recipientJson));
+            recipients.add(new UserImpl(api, recipientJson));
         }
 
         messageCache = new MessageCacheImpl(

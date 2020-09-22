@@ -2,6 +2,7 @@ package org.javacord.api.event.message.reaction;
 
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.Reaction;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.RequestableMessageEvent;
 import org.javacord.api.event.user.OptionalUserEvent;
 

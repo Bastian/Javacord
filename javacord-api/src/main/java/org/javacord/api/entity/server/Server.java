@@ -27,7 +27,7 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.permission.RoleBuilder;
 import org.javacord.api.entity.server.invite.RichInvite;
 import org.javacord.api.entity.user.Member;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.server.ServerAttachableListenerManager;
 
@@ -168,7 +168,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#getNickname()}.
      */
     @Deprecated
-    default Optional<String> getNickname(User2 user) {
+    default Optional<String> getNickname(User user) {
         return getMemberById(user.getId()).flatMap(Member::getNickname);
     }
 
@@ -201,7 +201,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfMuted()}.
      */
     @Deprecated
-    default boolean isSelfMuted(User2 user) {
+    default boolean isSelfMuted(User user) {
         return isSelfMuted(user.getId());
     }
 
@@ -234,7 +234,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#isSelfDeafened()}.
      */
     @Deprecated
-    default boolean isSelfDeafened(User2 user) {
+    default boolean isSelfDeafened(User user) {
         return isSelfDeafened(user.getId());
     }
 
@@ -301,7 +301,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#getDisplayName()}.
      */
     @Deprecated
-    default String getDisplayName(User2 user) {
+    default String getDisplayName(User user) {
         return getMemberById(user.getId()).map(Member::getDisplayName).orElse(user.getName());
     }
 
@@ -313,7 +313,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#getJoinedAtTimestamp()}.
      */
     @Deprecated
-    default Optional<Instant> getJoinedAtTimestamp(User2 user) {
+    default Optional<Instant> getJoinedAtTimestamp(User user) {
         return getMemberById(user.getId()).map(Member::getJoinedAtTimestamp);
     }
 
@@ -626,7 +626,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @param user The user to check.
      * @return If the user is a member of this server.
      */
-    boolean isMember(User2 user);
+    boolean isMember(User user);
 
     /**
      * Gets a sorted list (by position) with all roles of the server.
@@ -643,7 +643,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#getRoles()}.
      */
     @Deprecated
-    default List<Role> getRoles(User2 user) {
+    default List<Role> getRoles(User user) {
         return getMemberById(user.getId()).map(Member::getRoles).orElse(Collections.emptyList());
     }
 
@@ -714,7 +714,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      * @deprecated Use {@link #getMemberById(long)} and {@link Member#getRoleColor()}.
      */
     @Deprecated
-    default Optional<Color> getRoleColor(User2 user) {
+    default Optional<Color> getRoleColor(User user) {
         return getMemberById(user.getId()).flatMap(Member::getRoleColor);
     }
 

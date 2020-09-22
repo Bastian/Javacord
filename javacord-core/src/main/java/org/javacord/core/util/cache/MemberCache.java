@@ -16,16 +16,21 @@ public class MemberCache {
     private static final String SERVER_ID_INDEX_NAME = "server-id";
     private static final String ID_AND_SERVER_ID_INDEX_NAME = "server-id | type";
 
-    private static final MemberCache EMPTY_CACHE = new MemberCache(Cache.<Member>empty()
-            .addIndex(ID_INDEX_NAME, Member::getId)
-            .addIndex(SERVER_ID_INDEX_NAME, member -> member.getServer().getId())
-            .addIndex(ID_AND_SERVER_ID_INDEX_NAME, member -> Tuple.of(member.getId(), member.getServer().getId()))
+    private static final MemberCache EMPTY_CACHE = new MemberCache(
+            Cache.<Member>empty()
+                    .addIndex(ID_INDEX_NAME, Member::getId)
+                    .addIndex(SERVER_ID_INDEX_NAME, member -> member.getServer().getId())
+                    .addIndex(ID_AND_SERVER_ID_INDEX_NAME,
+                            member -> Tuple.of(member.getId(), member.getServer().getId())),
+            UserCache.empty()
     );
 
     private final Cache<Member> cache;
+    private final UserCache userCache;
 
-    private MemberCache(Cache<Member> cache) {
+    private MemberCache(Cache<Member> cache, UserCache userCache) {
         this.cache = cache;
+        this.userCache = userCache;
     }
 
     /**
@@ -40,21 +45,48 @@ public class MemberCache {
     /**
      * Adds a member to the cache.
      *
+     * <p>Automatically updates the underlying user cache, too.
+     *
      * @param member The member to add.
      * @return The new member cache.
      */
     public MemberCache addMember(Member member) {
-        return new MemberCache(cache.addElement(member));
+        return new MemberCache(
+                cache.addElement(member),
+                userCache.getUserById(member.getId())
+                        .map(userCache::removeUser)
+                        .orElse(userCache)
+                        .addUser(member.getUser())
+        );
     }
 
     /**
      * Removes a member from the cache.
      *
+     * <p>Automatically updates the underlying user cache, too.
+     *
      * @param member The member to remove.
      * @return The new member cache.
      */
     public MemberCache removeMember(Member member) {
-        return new MemberCache(cache.removeElement(member));
+        if (member == null) {
+            return this;
+        }
+        return new MemberCache(
+                cache.removeElement(member),
+                userCache.getUserById(member.getId())
+                        .map(userCache::removeUser)
+                        .orElse(userCache)
+        );
+    }
+
+    /**
+     * Gets the underlying user cache.
+     *
+     * @return The underlying user cache.
+     */
+    public UserCache getUserCache() {
+        return userCache;
     }
 
     /**

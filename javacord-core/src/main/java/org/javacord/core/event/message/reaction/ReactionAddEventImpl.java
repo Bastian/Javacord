@@ -40,7 +40,7 @@ public class ReactionAddEventImpl extends SingleReactionEventImpl implements Rea
 
     @Override
     public CompletableFuture<Void> removeReaction() {
-        return Reaction.removeUser(getApi(), getChannel().getId(), getMessageId(), getEmoji(), getUser());
+        return Reaction.removeUser(getApi(), getChannel().getId(), getMessageId(), getEmoji(), getUserId());
     }
 
 }

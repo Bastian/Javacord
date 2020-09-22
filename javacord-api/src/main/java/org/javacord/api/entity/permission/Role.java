@@ -8,7 +8,7 @@ import org.javacord.api.entity.UpdatableFromCache;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.ServerUpdater;
 import org.javacord.api.entity.user.Member;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.server.role.RoleAttachableListenerManager;
 
 import java.awt.Color;
@@ -80,7 +80,7 @@ public interface Role extends DiscordEntity, Mentionable, Nameable, Permissionab
      * @deprecated Use {@link #getMembers()} instead.
      */
     @Deprecated
-    default Collection<User2> getUsers() {
+    default Collection<User> getUsers() {
         return getMembers().stream().map(Member::getUser).collect(Collectors.toSet());
     }
 
@@ -97,7 +97,7 @@ public interface Role extends DiscordEntity, Mentionable, Nameable, Permissionab
      * @param user the user to check
      * @return Whether the given user has this role.
      */
-    default boolean hasUser(User2 user) {
+    default boolean hasUser(User user) {
         return getMembers().stream().anyMatch(member -> member.getId() == user.getId());
     }
 

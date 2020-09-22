@@ -8,6 +8,7 @@ import org.javacord.api.entity.Nameable;
 import org.javacord.api.entity.channel.Categorizable;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 
 import java.awt.Color;

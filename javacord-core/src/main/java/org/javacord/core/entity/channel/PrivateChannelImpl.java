@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.channel.PrivateChannel;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.util.cache.MessageCache;
 import org.javacord.core.DiscordApiImpl;
+import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.listener.channel.user.InternalPrivateChannelAttachableListenerManager;
 import org.javacord.core.util.Cleanupable;
 import org.javacord.core.util.cache.MessageCacheImpl;
@@ -46,13 +48,13 @@ public class PrivateChannelImpl implements PrivateChannel, Cleanupable, Internal
      */
     public PrivateChannelImpl(DiscordApiImpl api, JsonNode data) {
         this.api = api;
-        this.recipient = (UserImpl) api.getOrCreateUser(data.get("recipients").get(0));
+        this.recipient = new UserImpl(api, data.get("recipients").get(0));
         this.messageCache = new MessageCacheImpl(
                 api, api.getDefaultMessageCacheCapacity(), api.getDefaultMessageCacheStorageTimeInSeconds(),
                 api.isDefaultAutomaticMessageCacheCleanupEnabled());
 
         id = Long.parseLong(data.get("id").asText());
-        recipient.setChannel(this);
+        // TODO recipient.setChannel(this);
 
         api.addChannelToCache(this);
     }

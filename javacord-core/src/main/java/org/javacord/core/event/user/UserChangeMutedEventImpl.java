@@ -3,6 +3,8 @@ package org.javacord.core.event.user;
 import org.javacord.api.entity.user.Member;
 import org.javacord.api.event.user.UserChangeMutedEvent;
 
+import java.util.Optional;
+
 /**
  * The implementation of {@link UserChangeMutedEvent}.
  */
@@ -24,8 +26,8 @@ public class UserChangeMutedEventImpl extends ServerUserEventImpl implements Use
     }
 
     @Override
-    public Member getOldMember() {
-        return oldMember;
+    public Optional<Member> getOldMember() {
+        return Optional.ofNullable(oldMember);
     }
 
     @Override

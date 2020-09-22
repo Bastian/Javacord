@@ -3,6 +3,8 @@ package org.javacord.core.event.user;
 import org.javacord.api.entity.user.Member;
 import org.javacord.api.event.user.UserChangeDeafenedEvent;
 
+import java.util.Optional;
+
 /**
  * The implementation of {@link UserChangeDeafenedEvent}.
  */
@@ -24,8 +26,8 @@ public class UserChangeDeafenedEventImpl extends ServerUserEventImpl implements 
     }
 
     @Override
-    public Member getOldMember() {
-        return oldMember;
+    public Optional<Member> getOldMember() {
+        return Optional.ofNullable(oldMember);
     }
 
     @Override

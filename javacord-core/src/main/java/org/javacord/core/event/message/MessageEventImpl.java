@@ -8,6 +8,7 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageEvent;
 import org.javacord.core.entity.emoji.UnicodeEmojiImpl;
 import org.javacord.core.event.EventImpl;
@@ -124,7 +125,7 @@ public abstract class MessageEventImpl extends EventImpl implements MessageEvent
 
     @Override
     public CompletableFuture<Void> removeReactionByEmojiFromMessage(User user, Emoji emoji) {
-        return Reaction.removeUser(getApi(), getChannel().getId(), getMessageId(), emoji, user);
+        return Reaction.removeUser(getApi(), getChannel().getId(), getMessageId(), emoji, user.getId());
     }
 
     @Override
@@ -138,7 +139,7 @@ public abstract class MessageEventImpl extends EventImpl implements MessageEvent
                 .thenCompose(users -> CompletableFuture.allOf(
                         users.stream()
                                 .map(user -> Reaction.removeUser(getApi(), getChannel().getId(),
-                                        getMessageId(), emoji, user))
+                                        getMessageId(), emoji, user.getId()))
                                 .toArray(CompletableFuture[]::new)));
     }
 

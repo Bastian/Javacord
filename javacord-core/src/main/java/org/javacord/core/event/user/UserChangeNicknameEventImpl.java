@@ -26,8 +26,8 @@ public class UserChangeNicknameEventImpl extends ServerUserEventImpl implements 
     }
 
     @Override
-    public Member getOldMember() {
-        return oldMember;
+    public Optional<Member> getOldMember() {
+        return Optional.ofNullable(oldMember);
     }
 
     @Override

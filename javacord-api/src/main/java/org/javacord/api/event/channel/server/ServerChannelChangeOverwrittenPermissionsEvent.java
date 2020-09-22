@@ -3,6 +3,7 @@ package org.javacord.api.event.channel.server;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.User;
 
 import java.util.Optional;
 

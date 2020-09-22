@@ -10,6 +10,7 @@ import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.channel.group.GroupChannelChangeNameEvent;
 import org.javacord.api.event.channel.server.ServerChannelChangeNameEvent;
 import org.javacord.api.event.channel.server.ServerChannelChangeNsfwFlagEvent;
@@ -24,7 +25,6 @@ import org.javacord.core.entity.channel.GroupChannelImpl;
 import org.javacord.core.entity.channel.ServerChannelImpl;
 import org.javacord.core.entity.channel.ServerTextChannelImpl;
 import org.javacord.core.entity.channel.ServerVoiceChannelImpl;
-import org.javacord.core.entity.permission.PermissionsImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.event.channel.group.GroupChannelChangeNameEventImpl;
 import org.javacord.core.event.channel.server.ServerChannelChangeNameEventImpl;
@@ -39,13 +39,8 @@ import org.javacord.core.util.event.DispatchQueueSelector;
 import org.javacord.core.util.gateway.PacketHandler;
 import org.javacord.core.util.logging.LoggerUtil;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -155,85 +150,85 @@ public class ChannelUpdateHandler extends PacketHandler {
             }
         }
 
-        Collection<Long> rolesWithOverwrittenPermissions = new HashSet<>();
-        Collection<Long> usersWithOverwrittenPermissions = new HashSet<>();
-        if (jsonChannel.has("permission_overwrites") && !jsonChannel.get("permission_overwrites").isNull()) {
-            for (JsonNode permissionOverwriteJson : jsonChannel.get("permission_overwrites")) {
-                Permissions oldOverwrittenPermissions;
-                DiscordEntity entity;
-                ConcurrentHashMap<Long, Permissions> overwrittenPermissions = null;
-                switch (permissionOverwriteJson.get("type").asText()) {
-                    case "role":
-                        entity = server.getRoleById(permissionOverwriteJson.get("id").asText()).orElseThrow(() ->
-                                new IllegalStateException("Received channel update event with unknown role!"));
-                        oldOverwrittenPermissions = channel.getOverwrittenPermissions((Role) entity);
-                        overwrittenPermissions = channel.getInternalOverwrittenRolePermissions();
-                        rolesWithOverwrittenPermissions.add(entity.getId());
-                        break;
-                    case "member":
-                        entity = api.getCachedUserById(permissionOverwriteJson.get("id").asText()).orElseThrow(()
-                                -> new IllegalStateException("Received channel update event with unknown user!"));
-                        oldOverwrittenPermissions = channel.getOverwrittenPermissions((User) entity);
-                        overwrittenPermissions = channel.getInternalOverwrittenUserPermissions();
-                        usersWithOverwrittenPermissions.add(entity.getId());
-                        break;
-                    default:
-                        throw new IllegalStateException("Permission overwrite object with unknown type: "
-                                + permissionOverwriteJson.toString());
-                }
-                int allow = permissionOverwriteJson.get("allow").asInt(0);
-                int deny = permissionOverwriteJson.get("deny").asInt(0);
-                Permissions newOverwrittenPermissions = new PermissionsImpl(allow, deny);
-                if (!newOverwrittenPermissions.equals(oldOverwrittenPermissions)) {
-                    overwrittenPermissions.put(entity.getId(), newOverwrittenPermissions);
-                    if (server.isReady()) {
-                        dispatchServerChannelChangeOverwrittenPermissionsEvent(
-                                channel, newOverwrittenPermissions, oldOverwrittenPermissions, entity);
-                        areYouAffected.compareAndSet(false, entity instanceof User && ((User) entity).isYourself());
-                        areYouAffected.compareAndSet(false, entity instanceof Role
-                                && ((Role) entity).getUsers().stream().anyMatch(User::isYourself));
-                    }
-                }
-            }
-        }
-        ConcurrentHashMap<Long, Permissions> overwrittenRolePermissions = null;
-        ConcurrentHashMap<Long, Permissions> overwrittenUserPermissions = null;
-        overwrittenRolePermissions = channel.getInternalOverwrittenRolePermissions();
-        overwrittenUserPermissions = channel.getInternalOverwrittenUserPermissions();
-
-        Iterator<Map.Entry<Long, Permissions>> userIt = overwrittenUserPermissions.entrySet().iterator();
-        while (userIt.hasNext()) {
-            Map.Entry<Long, Permissions> entry = userIt.next();
-            if (usersWithOverwrittenPermissions.contains(entry.getKey())) {
-                continue;
-            }
-            api.getCachedUserById(entry.getKey()).ifPresent(user -> {
-                Permissions oldPermissions = entry.getValue();
-                userIt.remove();
-                if (server.isReady()) {
-                    dispatchServerChannelChangeOverwrittenPermissionsEvent(
-                            channel, PermissionsImpl.EMPTY_PERMISSIONS, oldPermissions, user);
-                    areYouAffected.compareAndSet(false, user.isYourself());
-                }
-            });
-        }
-
-        Iterator<Map.Entry<Long, Permissions>> roleIt = overwrittenRolePermissions.entrySet().iterator();
-        while (roleIt.hasNext()) {
-            Map.Entry<Long, Permissions> entry = roleIt.next();
-            if (rolesWithOverwrittenPermissions.contains(entry.getKey())) {
-                continue;
-            }
-            api.getRoleById(entry.getKey()).ifPresent(role -> {
-                Permissions oldPermissions = entry.getValue();
-                roleIt.remove();
-                if (server.isReady()) {
-                    dispatchServerChannelChangeOverwrittenPermissionsEvent(
-                            channel, PermissionsImpl.EMPTY_PERMISSIONS, oldPermissions, role);
-                    areYouAffected.compareAndSet(false, role.getUsers().stream().anyMatch(User::isYourself));
-                }
-            });
-        }
+        // TODO Handle overwritten permission changes
+        // Collection<Long> rolesWithOverwrittenPermissions = new HashSet<>();
+        // Collection<Long> usersWithOverwrittenPermissions = new HashSet<>();
+        // if (jsonChannel.has("permission_overwrites") && !jsonChannel.get("permission_overwrites").isNull()) {
+        //     for (JsonNode permissionOverwriteJson : jsonChannel.get("permission_overwrites")) {
+        //         Permissions oldOverwrittenPermissions;
+        //         ConcurrentHashMap<Long, Permissions> overwrittenPermissions = null;
+        //         switch (permissionOverwriteJson.get("type").asText()) {
+        //             case "role":
+        //                 entity = server.getRoleById(permissionOverwriteJson.get("id").asText()).orElseThrow(() ->
+        //                         new IllegalStateException("Received channel update event with unknown role!"));
+        //                 oldOverwrittenPermissions = channel.getOverwrittenPermissions((Role) entity);
+        //                 overwrittenPermissions = channel.getInternalOverwrittenRolePermissions();
+        //                 rolesWithOverwrittenPermissions.add(entity.getId());
+        //                 break;
+        //             case "member":
+        //                 entity = api.getCachedUserById(permissionOverwriteJson.get("id").asText()).orElseThrow(()
+        //                         -> new IllegalStateException("Received channel update event with unknown user!"));
+        //                 oldOverwrittenPermissions = channel.getOverwrittenPermissions((User) entity);
+        //                 overwrittenPermissions = channel.getInternalOverwrittenUserPermissions();
+        //                 usersWithOverwrittenPermissions.add(entity.getId());
+        //                 break;
+        //             default:
+        //                 throw new IllegalStateException("Permission overwrite object with unknown type: "
+        //                         + permissionOverwriteJson.toString());
+        //         }
+        //         int allow = permissionOverwriteJson.get("allow").asInt(0);
+        //         int deny = permissionOverwriteJson.get("deny").asInt(0);
+        //         Permissions newOverwrittenPermissions = new PermissionsImpl(allow, deny);
+        //         if (!newOverwrittenPermissions.equals(oldOverwrittenPermissions)) {
+        //             overwrittenPermissions.put(entity.getId(), newOverwrittenPermissions);
+        //             if (server.isReady()) {
+        //                 dispatchServerChannelChangeOverwrittenPermissionsEvent(
+        //                         channel, newOverwrittenPermissions, oldOverwrittenPermissions, entity);
+        //                 areYouAffected.compareAndSet(false, entity instanceof User && ((User) entity).isYourself());
+        //                 areYouAffected.compareAndSet(false, entity instanceof Role
+        //                         && ((Role) entity).getUsers().stream().anyMatch(User::isYourself));
+        //             }
+        //         }
+        //     }
+        // }
+        // ConcurrentHashMap<Long, Permissions> overwrittenRolePermissions = null;
+        // ConcurrentHashMap<Long, Permissions> overwrittenUserPermissions = null;
+        // overwrittenRolePermissions = channel.getInternalOverwrittenRolePermissions();
+        // overwrittenUserPermissions = channel.getInternalOverwrittenUserPermissions();
+//
+        // Iterator<Map.Entry<Long, Permissions>> userIt = overwrittenUserPermissions.entrySet().iterator();
+        // while (userIt.hasNext()) {
+        //     Map.Entry<Long, Permissions> entry = userIt.next();
+        //     if (usersWithOverwrittenPermissions.contains(entry.getKey())) {
+        //         continue;
+        //     }
+        //     api.getCachedUserById(entry.getKey()).ifPresent(user -> {
+        //         Permissions oldPermissions = entry.getValue();
+        //         userIt.remove();
+        //         if (server.isReady()) {
+        //             dispatchServerChannelChangeOverwrittenPermissionsEvent(
+        //                     channel, PermissionsImpl.EMPTY_PERMISSIONS, oldPermissions, user);
+        //             areYouAffected.compareAndSet(false, user.isYourself());
+        //         }
+        //     });
+        // }
+//
+        // Iterator<Map.Entry<Long, Permissions>> roleIt = overwrittenRolePermissions.entrySet().iterator();
+        // while (roleIt.hasNext()) {
+        //     Map.Entry<Long, Permissions> entry = roleIt.next();
+        //     if (rolesWithOverwrittenPermissions.contains(entry.getKey())) {
+        //         continue;
+        //     }
+        //     api.getRoleById(entry.getKey()).ifPresent(role -> {
+        //         Permissions oldPermissions = entry.getValue();
+        //         roleIt.remove();
+        //         if (server.isReady()) {
+        //             dispatchServerChannelChangeOverwrittenPermissionsEvent(
+        //                     channel, PermissionsImpl.EMPTY_PERMISSIONS, oldPermissions, role);
+        //             areYouAffected.compareAndSet(false, role.getUsers().stream().anyMatch(User::isYourself));
+        //         }
+        //     });
+        // }
 
         if (areYouAffected.get() && !channel.canYouSee()) {
             api.forEachCachedMessageWhere(

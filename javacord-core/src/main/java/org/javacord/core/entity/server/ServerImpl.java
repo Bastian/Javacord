@@ -410,21 +410,21 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
                     if (!presenceJson.get("game").isNull()) {
                         activity = new ActivityImpl(api, presenceJson.get("game"));
                     }
-                    user.setActivity(activity);
+                    // TODO user.setActivity(activity);
                 }
                 if (presenceJson.has("status")) {
                     UserStatus status = UserStatus.fromString(presenceJson.get("status").asText());
-                    user.setStatus(status);
+                    // TODO user.setStatus(status);
                 }
 
                 if (presenceJson.has("client_status")) {
                     JsonNode clientStatus = presenceJson.get("client_status");
                     for (DiscordClient client : DiscordClient.values()) {
                         if (clientStatus.hasNonNull(client.getName())) {
-                            user.setClientStatus(
-                                    client, UserStatus.fromString(clientStatus.get(client.getName()).asText()));
+                            // TODO user.setClientStatus(
+                            //        client, UserStatus.fromString(clientStatus.get(client.getName()).asText()));
                         } else {
-                            user.setClientStatus(client, UserStatus.OFFLINE);
+                            // TODO user.setClientStatus(client, UserStatus.OFFLINE);
                         }
                     }
                 }
@@ -1175,18 +1175,18 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     @Override
-    public Collection<Member> getMembers() {
-        return Collections.unmodifiableList(new ArrayList<>(members.values()));
+    public Set<Member> getMembers() {
+        return api.getEntityCache().get().getMemberCache().getMembersByServer(getId());
     }
 
     @Override
     public Optional<Member> getMemberById(long id) {
-        return Optional.ofNullable(members.get(id));
+        return api.getEntityCache().get().getMemberCache().getMemberByIdAndServer(id, getId());
     }
 
     @Override
     public boolean isMember(User user) {
-        return members.containsKey(user.getId());
+        return getMemberById(user.getId()).isPresent();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.javacord.core.entity.activity;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.ApplicationInfo;
+import org.javacord.api.entity.user.User;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -82,7 +83,7 @@ public class ApplicationInfoImpl implements ApplicationInfo {
     }
 
     @Override
-    public CompletableFuture<User2> getOwner() {
+    public CompletableFuture<User> getOwner() {
         return api.getUserById(getOwnerId());
     }
 }

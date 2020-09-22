@@ -9,6 +9,7 @@ import org.javacord.api.entity.message.MessageDecoration;
 import org.javacord.api.entity.message.Messageable;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.message.mention.AllowedMentions;
+import org.javacord.api.entity.user.User;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

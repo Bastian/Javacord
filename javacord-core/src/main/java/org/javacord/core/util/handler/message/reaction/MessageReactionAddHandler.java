@@ -62,7 +62,7 @@ public class MessageReactionAddHandler extends PacketHandler {
                     messageId,
                     optionalServer.orElse(null),
                     channel,
-                    user,
+                    userId,
                     event);
         });
     }

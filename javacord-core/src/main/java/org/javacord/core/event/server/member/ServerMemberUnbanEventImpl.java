@@ -1,7 +1,7 @@
 package org.javacord.core.event.server.member;
 
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberUnbanEvent;
 
 /**
@@ -15,7 +15,7 @@ public class ServerMemberUnbanEventImpl extends ServerMemberEventImpl implements
      * @param server The server of the event.
      * @param user The user of the event.
      */
-    public ServerMemberUnbanEventImpl(Server server, User2 user) {
+    public ServerMemberUnbanEventImpl(Server server, User user) {
         super(server, user);
     }
 

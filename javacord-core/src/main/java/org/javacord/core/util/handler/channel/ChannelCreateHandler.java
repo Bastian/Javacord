@@ -6,17 +6,14 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ChannelCategory;
 import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.channel.GroupChannel;
-import org.javacord.api.entity.channel.PrivateChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.event.channel.group.GroupChannelCreateEvent;
 import org.javacord.api.event.channel.server.ServerChannelCreateEvent;
-import org.javacord.api.event.channel.user.PrivateChannelCreateEvent;
 import org.javacord.core.entity.channel.GroupChannelImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.event.channel.group.GroupChannelCreateEventImpl;
 import org.javacord.core.event.channel.server.ServerChannelCreateEventImpl;
-import org.javacord.core.event.channel.user.PrivateChannelCreateEventImpl;
 import org.javacord.core.util.event.DispatchQueueSelector;
 import org.javacord.core.util.gateway.PacketHandler;
 import org.javacord.core.util.logging.LoggerUtil;
@@ -123,13 +120,15 @@ public class ChannelCreateHandler extends PacketHandler {
     private void handlePrivateChannel(JsonNode channel) {
         // A CHANNEL_CREATE packet is sent every time a bot account receives a message, see
         // https://github.com/hammerandchisel/discord-api-docs/issues/184
-        UserImpl recipient = (UserImpl) api.getOrCreateUser(channel.get("recipients").get(0));
-        if (!recipient.getPrivateChannel().isPresent()) {
-            PrivateChannel privateChannel = recipient.getOrCreateChannel(channel);
-            PrivateChannelCreateEvent event = new PrivateChannelCreateEventImpl(privateChannel);
 
-            api.getEventDispatcher().dispatchPrivateChannelCreateEvent(api, recipient, event);
-        }
+        // TODO Do we even need a PrivateChannelCreateEvent?
+        // UserImpl recipient = new UserImpl(api, channel.get("recipients").get(0));
+        // if (!recipient.getPrivateChannel().isPresent()) {
+        //     PrivateChannel privateChannel = recipient.getOrCreateChannel(channel);
+        //     PrivateChannelCreateEvent event = new PrivateChannelCreateEventImpl(privateChannel);
+        //
+        //     api.getEventDispatcher().dispatchPrivateChannelCreateEvent(api, recipient, event);
+        // }
     }
 
     /**

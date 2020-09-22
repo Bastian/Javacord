@@ -2,6 +2,7 @@ package org.javacord.api.entity.message;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.emoji.Emoji;
+import org.javacord.api.entity.user.User;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -54,11 +55,12 @@ public interface Reaction {
      * @param channelId The id of the message's channel.
      * @param messageId The id of the message.
      * @param emoji The emoji of the reaction.
-     * @param user The user to remove.
+     * @param userId The if of the user to remove.
      * @return A future to tell us if the action was successful.
      */
-    static CompletableFuture<Void> removeUser(DiscordApi api, long channelId, long messageId, Emoji emoji, User user) {
-        return api.getUncachedMessageUtil().removeUserReactionByEmoji(channelId, messageId, emoji, user);
+    static CompletableFuture<Void> removeUser(
+            DiscordApi api, long channelId, long messageId, Emoji emoji, long userId) {
+        return api.getUncachedMessageUtil().removeUserReactionByEmoji(channelId, messageId, emoji, userId);
     }
 
     /**
@@ -68,12 +70,12 @@ public interface Reaction {
      * @param channelId The id of the message's channel.
      * @param messageId The id of the message.
      * @param emoji The emoji of the reaction.
-     * @param user The user to remove.
+     * @param userId The if of the user to remove.
      * @return A future to tell us if the action was successful.
      */
     static CompletableFuture<Void> removeUser(DiscordApi api, String channelId, String messageId, Emoji emoji,
-                                              User user) {
-        return api.getUncachedMessageUtil().removeUserReactionByEmoji(channelId, messageId, emoji, user);
+                                              String userId) {
+        return api.getUncachedMessageUtil().removeUserReactionByEmoji(channelId, messageId, emoji, userId);
     }
 
     /**
@@ -83,8 +85,8 @@ public interface Reaction {
      * @return A future to tell us if the action was successful.
      */
     default CompletableFuture<Void> removeUser(User user) {
-        return Reaction.removeUser(
-                getMessage().getApi(), getMessage().getChannel().getId(), getMessage().getId(), getEmoji(), user);
+        return Reaction.removeUser(getMessage().getApi(), getMessage().getChannel().getId(), getMessage().getId(),
+                getEmoji(), user.getId());
     }
 
     /**

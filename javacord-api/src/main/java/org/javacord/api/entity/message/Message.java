@@ -17,6 +17,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.message.MessageAttachableListenerManager;
 import org.javacord.api.util.DiscordRegexPattern;
 
@@ -922,7 +923,7 @@ public interface Message extends DiscordEntity, Comparable<Message>, UpdatableFr
      * @return A future to tell us if the deletion was successful.
      */
     default CompletableFuture<Void> removeReactionByEmoji(User user, Emoji emoji) {
-        return Reaction.removeUser(getApi(), getChannel().getId(), getId(), emoji, user);
+        return Reaction.removeUser(getApi(), getChannel().getId(), getId(), emoji, user.getId());
     }
 
     /**

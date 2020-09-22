@@ -2,7 +2,7 @@ package org.javacord.core.event.user;
 
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.user.Member;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.user.TextChannelUserEvent;
 
 import java.util.Optional;
@@ -22,7 +22,7 @@ public abstract class ChannelUserEventImpl extends UserEventImpl implements Text
      * @param member The member of the event.
      * @param channel The text channel of the event.
      */
-    public ChannelUserEventImpl(User2 user, Member member, TextChannel channel) {
+    public ChannelUserEventImpl(User user, Member member, TextChannel channel) {
         super(user);
         this.member = member;
         this.channel = channel;

@@ -6,6 +6,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.message.internal.MessageBuilderDelegate;
 import org.javacord.api.entity.message.mention.AllowedMentions;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.util.internal.DelegateFactory;
 
 import java.awt.image.BufferedImage;

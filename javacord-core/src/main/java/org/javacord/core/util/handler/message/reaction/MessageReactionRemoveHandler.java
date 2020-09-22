@@ -54,7 +54,7 @@ public class MessageReactionRemoveHandler extends PacketHandler {
                     messageId,
                     optionalServer.orElse(null),
                     channel,
-                    user,
+                    userId,
                     event);
         });
     }

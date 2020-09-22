@@ -9,6 +9,7 @@ import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.internal.ServerChannelUpdaterDelegate;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.util.rest.RestEndpoint;
 import org.javacord.core.util.rest.RestMethod;
 import org.javacord.core.util.rest.RestRequest;

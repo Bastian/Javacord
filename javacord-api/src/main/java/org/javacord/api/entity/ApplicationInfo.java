@@ -1,6 +1,6 @@
 package org.javacord.api.entity;
 
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -64,6 +64,6 @@ public interface ApplicationInfo extends Nameable {
      *
      * @return The owner of the application.
      */
-    CompletableFuture<User2> getOwner();
+    CompletableFuture<User> getOwner();
 
 }

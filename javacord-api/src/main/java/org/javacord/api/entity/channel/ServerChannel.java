@@ -7,10 +7,10 @@ import org.javacord.api.entity.permission.PermissionState;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
-import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.InviteBuilder;
 import org.javacord.api.entity.server.invite.RichInvite;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.server.ServerChannelAttachableListenerManager;
 
 import java.util.Arrays;
@@ -123,8 +123,8 @@ public interface ServerChannel extends Channel, Nameable, ServerChannelAttachabl
      *
      * @return The overwritten permissions.
      */
-    default Map<Permissionable, Permissions> getOverwrittenPermissions() {
-        Map<Permissionable, Permissions> result = new HashMap<>();
+    default Map<Long, Permissions> getOverwrittenPermissions() {
+        Map<Long, Permissions> result = new HashMap<>();
         result.putAll(getOverwrittenRolePermissions());
         result.putAll(getOverwrittenUserPermissions());
         return Collections.unmodifiableMap(result);
@@ -135,14 +135,14 @@ public interface ServerChannel extends Channel, Nameable, ServerChannelAttachabl
      *
      * @return The overwritten permissions for users.
      */
-    Map<User, Permissions> getOverwrittenUserPermissions();
+    Map<Long, Permissions> getOverwrittenUserPermissions();
 
     /**
      * Gets the overwritten permissions for roles in this channel.
      *
      * @return The overwritten permissions for roles.
      */
-    Map<Role, Permissions> getOverwrittenRolePermissions();
+    Map<Long, Permissions> getOverwrittenRolePermissions();
 
     /**
      * Gets the effective overwritten permissions of a user.

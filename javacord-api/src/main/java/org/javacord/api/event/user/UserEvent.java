@@ -1,6 +1,6 @@
 package org.javacord.api.event.user;
 
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.Event;
 
 /**
@@ -13,6 +13,6 @@ public interface UserEvent extends Event {
      *
      * @return The user of the event.
      */
-    User2 getUser();
+    User getUser();
 
 }

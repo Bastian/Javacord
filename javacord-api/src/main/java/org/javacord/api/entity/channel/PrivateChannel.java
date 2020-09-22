@@ -1,5 +1,6 @@
 package org.javacord.api.entity.channel;
 
+import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.user.PrivateChannelAttachableListenerManager;
 
 import java.util.NoSuchElementException;
@@ -27,9 +28,7 @@ public interface PrivateChannel extends TextChannel, VoiceChannel, PrivateChanne
 
     @Override
     default Optional<PrivateChannel> getCurrentCachedInstance() {
-        return getApi().getCachedUserById(getRecipient().getId())
-                .flatMap(User::getPrivateChannel)
-                .filter(privateChannel -> privateChannel.getId() == getId());
+        return Optional.empty();
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.javacord.api.entity.user.Member;
 import org.javacord.api.event.server.role.UserRoleAddEvent;
 import org.javacord.api.event.server.role.UserRoleRemoveEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
-import org.javacord.core.entity.permission.RoleImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.entity.user.MemberImpl;
 import org.javacord.core.event.server.role.UserRoleAddEventImpl;
@@ -67,7 +66,7 @@ public class GuildMemberUpdateHandler extends PacketHandler {
                     if (packet.has("roles")) {
                         JsonNode jsonRoles = packet.get("roles");
                         Collection<Role> newRoles = new HashSet<>();
-                        Collection<Role> oldRoles = server.getRoles(user);
+                        Collection<Role> oldRoles = oldMember.getRoles();
                         Collection<Role> intersection = new HashSet<>();
                         for (JsonNode roleIdJson : jsonRoles) {
                             api.getRoleById(roleIdJson.asText())
@@ -86,11 +85,10 @@ public class GuildMemberUpdateHandler extends PacketHandler {
                             if (role.isEveryoneRole()) {
                                 continue;
                             }
-                            ((RoleImpl) role).addUserToCache(user);
-                            UserRoleAddEvent event = new UserRoleAddEventImpl(role, user);
+                            UserRoleAddEvent event = new UserRoleAddEventImpl(role, newMember);
 
-                            api.getEventDispatcher().dispatchUserRoleAddEvent(
-                                    (DispatchQueueSelector) role.getServer(), role, role.getServer(), user, event);
+                            api.getEventDispatcher().dispatchUserRoleAddEvent((DispatchQueueSelector) role.getServer(),
+                                    role, role.getServer(), newMember.getId(), event);
                         }
 
                         // Removed roles
@@ -100,15 +98,15 @@ public class GuildMemberUpdateHandler extends PacketHandler {
                             if (role.isEveryoneRole()) {
                                 continue;
                             }
-                            ((RoleImpl) role).removeUserFromCache(user);
-                            UserRoleRemoveEvent event = new UserRoleRemoveEventImpl(role, user);
+                            UserRoleRemoveEvent event = new UserRoleRemoveEventImpl(role, newMember);
 
                             api.getEventDispatcher().dispatchUserRoleRemoveEvent(
-                                    (DispatchQueueSelector) role.getServer(), role, role.getServer(), user, event);
+                                    (DispatchQueueSelector) role.getServer(), role, role.getServer(), newMember.getId(),
+                                    event);
                         }
                     }
 
-                    if (user.isYourself()) {
+                    if (newMember.getUser().isYourself()) {
                         Set<Long> unreadableChannels = server.getTextChannels().stream()
                                 .filter(((Predicate<ServerTextChannel>)ServerTextChannel::canYouSee).negate())
                                 .map(ServerTextChannel::getId)

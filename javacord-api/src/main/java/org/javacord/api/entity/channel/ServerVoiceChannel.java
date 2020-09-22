@@ -1,6 +1,7 @@
 package org.javacord.api.entity.channel;
 
 import org.javacord.api.audio.AudioConnection;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.listener.channel.server.voice.ServerVoiceChannelAttachableListenerManager;
 
 import java.util.Collection;

@@ -2,7 +2,7 @@ package org.javacord.core.event.server.member;
 
 import org.javacord.api.entity.server.Ban;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberBanEvent;
 import org.javacord.core.event.server.ServerEventImpl;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class ServerMemberBanEventImpl extends ServerEventImpl implements ServerMemberBanEvent {
 
-    private final User2 user;
+    private final User user;
 
     /**
      * Creates a new server member ban event.
@@ -22,7 +22,7 @@ public class ServerMemberBanEventImpl extends ServerEventImpl implements ServerM
      * @param server The server of the event.
      * @param user The user of the event.
      */
-    public ServerMemberBanEventImpl(Server server, User2 user) {
+    public ServerMemberBanEventImpl(Server server, User user) {
         super(server);
         this.user = user;
     }
@@ -36,7 +36,7 @@ public class ServerMemberBanEventImpl extends ServerEventImpl implements ServerM
     }
 
     @Override
-    public User2 getUser() {
+    public User getUser() {
         return user;
     }
 }

@@ -1,6 +1,6 @@
 package org.javacord.api.event.user;
 
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.Event;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public interface OptionalUserEvent extends Event {
      *
      * @return The user of the event.
      */
-    default Optional<User2> getUser() {
+    default Optional<User> getUser() {
         return getApi().getCachedUserById(getUserId());
     }
 
@@ -44,7 +44,7 @@ public interface OptionalUserEvent extends Event {
      *
      * @return The user.
      */
-    default CompletableFuture<User2> requestUser() {
+    default CompletableFuture<User> requestUser() {
         return getApi().getUserById(getUserId());
     }
 

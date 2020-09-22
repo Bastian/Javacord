@@ -1,7 +1,7 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.user.TextChannelUserEvent;
 import org.javacord.api.event.user.UserEvent;
 import org.javacord.core.event.server.ServerEventImpl;
@@ -14,7 +14,7 @@ public abstract class ServerUserEventImpl extends ServerEventImpl implements Use
     /**
      * The supplier for the user of the event.
      */
-    private final User2 user;
+    private final User user;
 
     /**
      * Creates a new server user event.
@@ -22,13 +22,13 @@ public abstract class ServerUserEventImpl extends ServerEventImpl implements Use
      * @param user The user of the event.
      * @param server The server of the event.
      */
-    public ServerUserEventImpl(User2 user, Server server) {
+    public ServerUserEventImpl(User user, Server server) {
         super(server);
         this.user = user;
     }
 
     @Override
-    public User2 getUser() {
+    public User getUser() {
         return user;
     }
 

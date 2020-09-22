@@ -5,7 +5,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.Member;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.server.ServerImpl;
 
@@ -27,7 +27,7 @@ public final class MemberImpl implements Member {
 
     private final DiscordApiImpl api;
     private final ServerImpl server;
-    private final User2Impl user;
+    private final UserImpl user;
     private final String nickname;
     private final List<Long> roleIds;
     private final String joinedAt;
@@ -44,12 +44,12 @@ public final class MemberImpl implements Member {
      * @param user A user object in case the json does not contain user data (e.g., for message create events).
      *             If the json contains a non-null user field, this parameter is ignored.
      */
-    public MemberImpl(DiscordApiImpl api, ServerImpl server, JsonNode data, User2Impl user) {
+    public MemberImpl(DiscordApiImpl api, ServerImpl server, JsonNode data, UserImpl user) {
         this.api = api;
         this.server = server;
 
         if (data.hasNonNull("user")) {
-            this.user = new User2Impl(api, data.get("user"));
+            this.user = new UserImpl(api, data.get("user"));
         } else {
             this.user = user;
         }
@@ -76,7 +76,7 @@ public final class MemberImpl implements Member {
         selfMuted = data.get("mute").asBoolean();
     }
 
-    private MemberImpl(DiscordApiImpl api, ServerImpl server, User2Impl user, String nickname, List<Long> roleIds,
+    private MemberImpl(DiscordApiImpl api, ServerImpl server, UserImpl user, String nickname, List<Long> roleIds,
                        String joinedAt, String serverBoostingSince, boolean selfDeafened, boolean selfMuted) {
         this.api = api;
         this.server = server;
@@ -95,7 +95,7 @@ public final class MemberImpl implements Member {
      * @param user The new user.
      * @return The new member.
      */
-    public MemberImpl setUser(User2Impl user) {
+    public MemberImpl setUser(UserImpl user) {
         return new MemberImpl(
                 api, server, user, nickname, roleIds, joinedAt, serverBoostingSince, selfDeafened, selfMuted);
     }
@@ -160,7 +160,7 @@ public final class MemberImpl implements Member {
     }
 
     @Override
-    public User2 getUser() {
+    public User getUser() {
         return user;
     }
 

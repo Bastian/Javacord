@@ -5,6 +5,7 @@ import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EditableEmbedField;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.message.embed.EmbedField;
+import org.javacord.api.entity.user.User;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

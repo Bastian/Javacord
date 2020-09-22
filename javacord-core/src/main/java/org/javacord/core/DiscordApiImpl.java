@@ -32,7 +32,7 @@ import org.javacord.api.entity.message.UncachedMessageUtil;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.Invite;
 import org.javacord.api.entity.user.Member;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.GloballyAttachableListener;
@@ -52,6 +52,7 @@ import org.javacord.core.entity.message.MessageSetImpl;
 import org.javacord.core.entity.message.UncachedMessageUtilImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.entity.server.invite.InviteImpl;
+import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.entity.webhook.WebhookImpl;
 import org.javacord.core.util.ClassHelper;
 import org.javacord.core.util.Cleanupable;
@@ -262,7 +263,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     /**
      * The user of the connected account.
      */
-    private volatile User2 you;
+    private volatile User you;
 
     /**
      * The client id of the application.
@@ -287,7 +288,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     /**
      * Whether the user cache is enabled or not.
      */
-    private final boolean userCacheEnabled;
+    private final boolean userCacheEnabled = true; // TODO
 
     /**
      * A map which contains all servers that are ready.
@@ -910,7 +911,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      *
      * @param yourself The user of the connected account.
      */
-    public void setYourself(User2 yourself) {
+    public void setYourself(User yourself) {
         you = yourself;
     }
 
@@ -1427,7 +1428,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     }
 
     @Override
-    public User2 getYourself() {
+    public User getYourself() {
         return you;
     }
 
@@ -1523,17 +1524,12 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
 
     @Override
     public Collection<User> getCachedUsers() {
-        synchronized (users) {
-            return Collections.unmodifiableCollection(users.values().stream()
-                    .map(Reference::get)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()));
-        }
+        return getEntityCache().get().getMemberCache().getUserCache().getUsers();
     }
 
     @Override
     public Optional<User> getCachedUserById(long id) {
-        return Optional.ofNullable(users.get(id)).map(Reference::get);
+        return getEntityCache().get().getMemberCache().getUserCache().getUserById(id);
     }
 
     @Override
@@ -1542,7 +1538,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
                 .map(CompletableFuture::completedFuture)
                 .orElseGet(() -> new RestRequest<User>(this, RestMethod.GET, RestEndpoint.USER)
                 .setUrlParameters(Long.toUnsignedString(id))
-                .execute(result -> this.getOrCreateUser(result.getJsonBody())));
+                .execute(result -> new UserImpl(this, result.getJsonBody())));
     }
 
     @Override

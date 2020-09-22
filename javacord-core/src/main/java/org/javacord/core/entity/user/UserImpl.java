@@ -1,23 +1,31 @@
 package org.javacord.core.entity.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.Javacord;
 import org.javacord.api.entity.Icon;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.channel.PrivateChannel;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.IconImpl;
+import org.javacord.core.entity.channel.PrivateChannelImpl;
+import org.javacord.core.listener.user.InternalUserAttachableListenerManager;
+import org.javacord.core.util.rest.RestEndpoint;
+import org.javacord.core.util.rest.RestMethod;
+import org.javacord.core.util.rest.RestRequest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Maps a member object.
  *
  * @see <a href="https://discord.com/developers/docs/resources/user#user-object">Discord Docs</a>
  */
-public class User2Impl implements User2 {
+public class UserImpl implements User, InternalUserAttachableListenerManager {
 
     private final DiscordApiImpl api;
     private final Long id;
@@ -26,7 +34,7 @@ public class User2Impl implements User2 {
     private final String avatarHash;
     private final boolean bot;
 
-    public User2Impl(DiscordApiImpl api, JsonNode data) {
+    public UserImpl(DiscordApiImpl api, JsonNode data) {
         this.api = api;
         id = data.get("id").asLong();
         name = data.get("username").asText();
@@ -39,7 +47,7 @@ public class User2Impl implements User2 {
         bot = data.hasNonNull("bot") && data.get("bot").asBoolean();
     }
 
-    private User2Impl(DiscordApiImpl api, Long id, String name, String discriminator, String avatarHash, boolean bot) {
+    private UserImpl(DiscordApiImpl api, Long id, String name, String discriminator, String avatarHash, boolean bot) {
         this.api = api;
         this.id = id;
         this.name = name;
@@ -48,7 +56,7 @@ public class User2Impl implements User2 {
         this.bot = bot;
     }
 
-    public User2Impl replacePartialUserData(JsonNode partialUserJson) {
+    public UserImpl replacePartialUserData(JsonNode partialUserJson) {
         if (partialUserJson.get("id").asLong() != id) {
             throw new IllegalArgumentException("Ids of user do not match");
         }
@@ -67,7 +75,7 @@ public class User2Impl implements User2 {
             avatarHash = partialUserJson.get("avatar").asText();
         }
 
-        return new User2Impl(api, id, name, discriminator, avatarHash, bot);
+        return new UserImpl(api, id, name, discriminator, avatarHash, bot);
     }
 
     @Override
@@ -131,6 +139,14 @@ public class User2Impl implements User2 {
     @Override
     public boolean isBot() {
         return bot;
+    }
+
+    @Override
+    public CompletableFuture<PrivateChannel> openPrivateChannel() {
+        // TODO Maybe cache the private channel?
+        return new RestRequest<PrivateChannel>(api, RestMethod.POST, RestEndpoint.USER_CHANNEL)
+                .setBody(JsonNodeFactory.instance.objectNode().put("recipient_id", getIdAsString()))
+                .execute(result -> new PrivateChannelImpl(api, result.getJsonBody()));
     }
 
     @Override

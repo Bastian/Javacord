@@ -9,6 +9,7 @@ import org.javacord.api.entity.server.DefaultMessageNotificationLevel;
 import org.javacord.api.entity.server.ExplicitContentFilterLevel;
 import org.javacord.api.entity.server.ServerUpdater;
 import org.javacord.api.entity.server.VerificationLevel;
+import org.javacord.api.entity.user.User;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

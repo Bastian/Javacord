@@ -7,6 +7,7 @@ import org.javacord.api.entity.Permissionable;
 import org.javacord.api.entity.channel.internal.ServerChannelBuilderDelegate;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.entity.server.ServerImpl;
 
 import java.util.HashMap;

@@ -19,6 +19,7 @@ import org.javacord.api.entity.activity.Activity;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.intent.Intent;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.connection.LostConnectionEvent;
 import org.javacord.api.event.connection.ReconnectEvent;
 import org.javacord.api.event.connection.ResumeEvent;

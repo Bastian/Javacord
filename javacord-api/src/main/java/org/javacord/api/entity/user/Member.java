@@ -43,7 +43,7 @@ public interface Member extends DiscordEntity, Messageable, Mentionable, Permiss
      *
      * @return The user.
      */
-    User2 getUser();
+    User getUser();
 
     /**
      * Gets the nickname of this member.

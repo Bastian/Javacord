@@ -3,9 +3,9 @@ package org.javacord.core.entity.server;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.javacord.api.entity.server.Ban;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
-import org.javacord.core.entity.user.User2Impl;
+import org.javacord.core.entity.user.UserImpl;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class BanImpl implements Ban {
     /**
      * The banned user.
      */
-    private final User2 user;
+    private final User user;
 
     /**
      * The reason for the ban.
@@ -37,7 +37,7 @@ public class BanImpl implements Ban {
      */
     public BanImpl(Server server, JsonNode data) {
         this.server = server;
-        user = new User2Impl((DiscordApiImpl) server.getApi(), data.get("user"));
+        user = new UserImpl((DiscordApiImpl) server.getApi(), data.get("user"));
         reason = data.has("reason") ? data.get("reason").asText() : null;
     }
 
@@ -47,7 +47,7 @@ public class BanImpl implements Ban {
     }
 
     @Override
-    public User2 getUser() {
+    public User getUser() {
         return user;
     }
 

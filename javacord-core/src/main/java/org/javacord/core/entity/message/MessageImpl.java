@@ -14,12 +14,12 @@ import org.javacord.api.entity.message.MessageType;
 import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.user.User2;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.util.DiscordRegexPattern;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.emoji.UnicodeEmojiImpl;
 import org.javacord.core.entity.message.embed.EmbedImpl;
-import org.javacord.core.entity.user.User2Impl;
+import org.javacord.core.entity.user.UserImpl;
 import org.javacord.core.listener.message.InternalMessageAttachableListenerManager;
 import org.javacord.core.util.cache.MessageCacheImpl;
 
@@ -117,7 +117,7 @@ public class MessageImpl implements Message, InternalMessageAttachableListenerMa
     /**
      * The users mentioned in this message.
      */
-    private final List<User2> mentions = new ArrayList<>();
+    private final List<User> mentions = new ArrayList<>();
 
     /**
      * The roles mentioned in this message.
@@ -177,7 +177,7 @@ public class MessageImpl implements Message, InternalMessageAttachableListenerMa
 
         if (data.has("mentions")) {
             for (JsonNode mentionJson : data.get("mentions")) {
-                User2 user = new User2Impl(api, mentionJson);
+                User user = new UserImpl(api, mentionJson);
                 mentions.add(user);
             }
         }
@@ -367,7 +367,7 @@ public class MessageImpl implements Message, InternalMessageAttachableListenerMa
     }
 
     @Override
-    public Optional<User2> getUserAuthor() {
+    public Optional<User> getUserAuthor() {
         return author.asUser();
     }
 
@@ -394,7 +394,7 @@ public class MessageImpl implements Message, InternalMessageAttachableListenerMa
     }
 
     @Override
-    public List<User2> getMentionedUsers() {
+    public List<User> getMentionedUsers() {
         return Collections.unmodifiableList(new ArrayList<>(mentions));
     }
 

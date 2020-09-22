@@ -12,6 +12,7 @@ import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.invite.RichInvite;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.permission.PermissionsImpl;
 import org.javacord.core.entity.server.ServerImpl;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -205,25 +207,13 @@ public abstract class ServerChannelImpl implements ServerChannel, InternalServer
     }
 
     @Override
-    public Map<User, Permissions> getOverwrittenUserPermissions() {
-        Server server = getServer();
-        return Collections.unmodifiableMap(
-                overwrittenUserPermissions.entrySet().stream()
-                        .collect(Collectors.toMap(
-                                entry -> server.getMemberById(entry.getKey()).orElseThrow(AssertionError::new),
-                                Map.Entry::getValue))
-        );
+    public Map<Long, Permissions> getOverwrittenUserPermissions() {
+        return Collections.unmodifiableMap(new HashMap<>(overwrittenUserPermissions));
     }
 
     @Override
-    public Map<Role, Permissions> getOverwrittenRolePermissions() {
-        Server server = getServer();
-        return Collections.unmodifiableMap(
-                overwrittenRolePermissions.entrySet().stream()
-                        .collect(Collectors.toMap(
-                                entry -> server.getRoleById(entry.getKey()).orElseThrow(AssertionError::new),
-                                Map.Entry::getValue))
-        );
+    public Map<Long, Permissions> getOverwrittenRolePermissions() {
+        return Collections.unmodifiableMap(new HashMap<>(overwrittenRolePermissions));
     }
 
     @Override
@@ -260,7 +250,8 @@ public abstract class ServerChannelImpl implements ServerChannel, InternalServer
             }
         }
         for (PermissionType type : PermissionType.values()) {
-            Permissions permissions = getOverwrittenPermissions(user);
+            Permissions permissions = overwrittenUserPermissions
+                    .getOrDefault(user.getId(), PermissionsImpl.EMPTY_PERMISSIONS);
             if (permissions.getState(type) == PermissionState.DENIED) {
                 builder.setState(type, PermissionState.DENIED);
             }

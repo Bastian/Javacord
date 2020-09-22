@@ -2,6 +2,7 @@ package org.javacord.api.entity.auditlog;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 
 import java.util.Collection;

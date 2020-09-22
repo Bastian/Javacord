@@ -5,6 +5,7 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageSet;
 import org.javacord.api.entity.message.Messageable;
 import org.javacord.api.entity.permission.PermissionType;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.webhook.Webhook;
 import org.javacord.api.listener.channel.TextChannelAttachableListenerManager;
 import org.javacord.api.listener.message.MessageCreateListener;
