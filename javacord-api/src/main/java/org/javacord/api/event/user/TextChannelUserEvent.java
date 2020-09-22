@@ -5,5 +5,5 @@ import org.javacord.api.event.channel.TextChannelEvent;
 /**
  * A text channel event which effects a user.
  */
-public interface TextChannelUserEvent extends TextChannelEvent, UserEvent {
+public interface TextChannelUserEvent extends TextChannelEvent, UserEvent, OptionalMemberEvent {
 }

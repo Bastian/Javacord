@@ -1,5 +1,6 @@
 package org.javacord.core.event.user;
 
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.user.UserChangeNameEvent;
 
 /**
@@ -24,7 +25,7 @@ public class UserChangeNameEventImpl extends UserEventImpl implements UserChange
      * @param newName The new name of the user.
      * @param oldName The old name of the user.
      */
-    public UserChangeNameEventImpl(User user, String newName, String oldName) {
+    public UserChangeNameEventImpl(User2 user, String newName, String oldName) {
         super(user);
         this.newName = newName;
         this.oldName = oldName;

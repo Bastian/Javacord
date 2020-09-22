@@ -1,7 +1,9 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.Icon;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.user.UserChangeAvatarEvent;
+import org.javacord.core.entity.user.User2Impl;
 
 /**
  * The implementation of {@link UserChangeAvatarEvent}.
@@ -25,7 +27,7 @@ public class UserChangeAvatarEventImpl extends UserEventImpl implements UserChan
      * @param newAvatarHash The new avatar hash of the user.
      * @param oldAvatarHash The old avatar hash of the user.
      */
-    public UserChangeAvatarEventImpl(User user, String newAvatarHash, String oldAvatarHash) {
+    public UserChangeAvatarEventImpl(User2 user, String newAvatarHash, String oldAvatarHash) {
         super(user);
         this.newAvatarHash = newAvatarHash;
         this.oldAvatarHash = oldAvatarHash;
@@ -33,7 +35,7 @@ public class UserChangeAvatarEventImpl extends UserEventImpl implements UserChan
 
     @Override
     public Icon getNewAvatar() {
-        return UserImpl.getAvatar(api, newAvatarHash, getUser().getDiscriminator(), getUser().getId());
+        return User2Impl.getAvatar(api, newAvatarHash, getUser().getDiscriminator(), getUser().getId());
     }
 
     @Override
@@ -43,7 +45,7 @@ public class UserChangeAvatarEventImpl extends UserEventImpl implements UserChan
 
     @Override
     public Icon getOldAvatar() {
-        return UserImpl.getAvatar(api, oldAvatarHash, getUser().getDiscriminator(), getUser().getId());
+        return User2Impl.getAvatar(api, oldAvatarHash, getUser().getDiscriminator(), getUser().getId());
     }
 
     @Override

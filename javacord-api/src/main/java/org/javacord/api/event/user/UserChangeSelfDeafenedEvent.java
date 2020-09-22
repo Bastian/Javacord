@@ -5,7 +5,7 @@ import org.javacord.api.event.server.ServerEvent;
 /**
  * A user change self-deafened event.
  */
-public interface UserChangeSelfDeafenedEvent extends UserEvent, ServerEvent {
+public interface UserChangeSelfDeafenedEvent extends UserEvent, ServerEvent, MemberUpdateEvent {
 
     /**
      * Gets the new self-deafened state of the user.

@@ -1,24 +1,27 @@
 package org.javacord.core.util.handler.guild;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.logging.log4j.Logger;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.user.Member;
 import org.javacord.api.event.server.role.UserRoleAddEvent;
 import org.javacord.api.event.server.role.UserRoleRemoveEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 import org.javacord.core.entity.permission.RoleImpl;
 import org.javacord.core.entity.server.ServerImpl;
+import org.javacord.core.entity.user.MemberImpl;
 import org.javacord.core.event.server.role.UserRoleAddEventImpl;
 import org.javacord.core.event.server.role.UserRoleRemoveEventImpl;
 import org.javacord.core.event.user.UserChangeNicknameEventImpl;
 import org.javacord.core.util.event.DispatchQueueSelector;
 import org.javacord.core.util.gateway.PacketHandler;
+import org.javacord.core.util.logging.LoggerUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -27,6 +30,8 @@ import java.util.stream.Collectors;
  * Handles the guild member update packet.
  */
 public class GuildMemberUpdateHandler extends PacketHandler {
+
+    private static final Logger logger = LoggerUtil.getLogger(GuildMemberUpdateHandler.class);
 
     /**
      * Creates a new instance of this class.
@@ -41,18 +46,22 @@ public class GuildMemberUpdateHandler extends PacketHandler {
     public void handle(JsonNode packet) {
         api.getPossiblyUnreadyServerById(packet.get("guild_id").asLong()).map(server -> (ServerImpl) server)
                 .ifPresent(server -> {
-                    User user = api.getOrCreateUser(packet.get("user"));
-                    if (packet.has("nick")) {
-                        String newNickname = packet.get("nick").asText(null);
-                        String oldNickname = server.getNickname(user).orElse(null);
-                        if (!Objects.deepEquals(newNickname, oldNickname)) {
-                            server.setNickname(user, newNickname);
+                    MemberImpl newMember = new MemberImpl(api, server, packet, null);
+                    Member oldMember = server.getMemberById(newMember.getId()).orElse(null);
 
-                            UserChangeNicknameEvent event =
-                                    new UserChangeNicknameEventImpl(user, server, newNickname, oldNickname);
+                    api.addMemberToCacheOrReplaceExisting(newMember);
 
-                            api.getEventDispatcher().dispatchUserChangeNicknameEvent(server, server, user, event);
-                        }
+                    if (oldMember == null) {
+                        // This should not happen
+                        logger.warn("Failed to get old member in GUILD_MEMBER_UPDATE packet");
+                        return;
+                    }
+
+                    if (!newMember.getNickname().equals(oldMember.getNickname())) {
+                        UserChangeNicknameEvent event =
+                                new UserChangeNicknameEventImpl(newMember, oldMember);
+
+                        api.getEventDispatcher().dispatchUserChangeNicknameEvent(server, server, newMember.getUser(), event);
                     }
 
                     if (packet.has("roles")) {

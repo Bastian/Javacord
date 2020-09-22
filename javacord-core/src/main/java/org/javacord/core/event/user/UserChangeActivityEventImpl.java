@@ -1,6 +1,7 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.activity.Activity;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.user.UserChangeActivityEvent;
 
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class UserChangeActivityEventImpl extends UserEventImpl implements UserCh
      * @param newActivity The new activity of the user.
      * @param oldActivity The old activity of the user.
      */
-    public UserChangeActivityEventImpl(User user, Activity newActivity, Activity oldActivity) {
+    public UserChangeActivityEventImpl(User2 user, Activity newActivity, Activity oldActivity) {
         super(user);
         this.newActivity = newActivity;
         this.oldActivity = oldActivity;

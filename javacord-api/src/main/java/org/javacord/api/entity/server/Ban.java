@@ -1,5 +1,7 @@
 package org.javacord.api.entity.server;
 
+import org.javacord.api.entity.user.User2;
+
 import java.util.Optional;
 
 /**
@@ -19,7 +21,7 @@ public interface Ban {
      *
      * @return The banned user.
      */
-    User getUser();
+    User2 getUser();
 
     /**
      * Gets the reason for the ban.

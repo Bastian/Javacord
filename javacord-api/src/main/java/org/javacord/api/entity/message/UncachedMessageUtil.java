@@ -2,6 +2,7 @@ package org.javacord.api.entity.message;
 
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.listener.message.UncachedMessageAttachableListenerManager;
 
 import java.util.List;
@@ -342,7 +343,7 @@ public interface UncachedMessageUtil extends UncachedMessageAttachableListenerMa
      * @param emoji The emoji of the reaction.
      * @return A list with all users who reacted with the given emoji
      */
-    CompletableFuture<List<User>> getUsersWhoReactedWithEmoji(long channelId, long messageId, Emoji emoji);
+    CompletableFuture<List<User2>> getUsersWhoReactedWithEmoji(long channelId, long messageId, Emoji emoji);
 
     /**
      * Gets a list with all users who reacted with the given emoji.
@@ -352,7 +353,7 @@ public interface UncachedMessageUtil extends UncachedMessageAttachableListenerMa
      * @param emoji The emoji of the reaction.
      * @return A list with all users who reacted with the given emoji
      */
-    CompletableFuture<List<User>> getUsersWhoReactedWithEmoji(String channelId, String messageId, Emoji emoji);
+    CompletableFuture<List<User2>> getUsersWhoReactedWithEmoji(String channelId, String messageId, Emoji emoji);
 
     /**
      * Removes the reaction of the given user.
@@ -360,10 +361,10 @@ public interface UncachedMessageUtil extends UncachedMessageAttachableListenerMa
      * @param channelId The id of the message's channel.
      * @param messageId The id of the message.
      * @param emoji The emoji of the reaction.
-     * @param user The user to remove.
+     * @param userId The if of the user to remove.
      * @return A future to tell us if the action was successful.
      */
-    CompletableFuture<Void> removeUserReactionByEmoji(long channelId, long messageId, Emoji emoji, User user);
+    CompletableFuture<Void> removeUserReactionByEmoji(long channelId, long messageId, Emoji emoji, long userId);
 
     /**
      * Removes the reaction of the given user.
@@ -371,9 +372,9 @@ public interface UncachedMessageUtil extends UncachedMessageAttachableListenerMa
      * @param channelId The id of the message's channel.
      * @param messageId The id of the message.
      * @param emoji The emoji of the reaction.
-     * @param user The user to remove.
+     * @param userId The if of the user to remove.
      * @return A future to tell us if the action was successful.
      */
-    CompletableFuture<Void> removeUserReactionByEmoji(String channelId, String messageId, Emoji emoji, User user);
+    CompletableFuture<Void> removeUserReactionByEmoji(String channelId, String messageId, Emoji emoji, String userId);
 
 }

@@ -1,6 +1,7 @@
 package org.javacord.core.event.server.member;
 
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
 
 /**
@@ -14,7 +15,7 @@ public class ServerMemberLeaveEventImpl extends ServerMemberEventImpl implements
      * @param server The server of the event.
      * @param user The user of the event.
      */
-    public ServerMemberLeaveEventImpl(Server server, User user) {
+    public ServerMemberLeaveEventImpl(Server server, User2 user) {
         super(server, user);
     }
 

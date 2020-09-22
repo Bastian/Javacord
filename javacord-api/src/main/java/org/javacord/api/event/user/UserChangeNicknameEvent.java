@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * A user change nickname event.
  */
-public interface UserChangeNicknameEvent extends UserEvent, ServerEvent {
+public interface UserChangeNicknameEvent extends UserEvent, ServerEvent, MemberUpdateEvent {
 
     /**
      * Gets the new nickname of the user.

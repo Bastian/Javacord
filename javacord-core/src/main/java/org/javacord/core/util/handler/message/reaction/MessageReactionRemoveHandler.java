@@ -33,7 +33,7 @@ public class MessageReactionRemoveHandler extends PacketHandler {
     public void handle(JsonNode packet) {
         api.getTextChannelById(packet.get("channel_id").asText()).ifPresent(channel -> {
             long messageId = packet.get("message_id").asLong();
-            User user = api.getCachedUserById(packet.get("user_id").asText()).orElseThrow(AssertionError::new);
+            long userId = packet.get("user_id").asLong();
             Optional<Message> message = api.getCachedMessageById(messageId);
 
             Emoji emoji;
@@ -44,9 +44,9 @@ public class MessageReactionRemoveHandler extends PacketHandler {
                 emoji = api.getKnownCustomEmojiOrCreateCustomEmoji(emojiJson);
             }
 
-            message.ifPresent(msg -> ((MessageImpl) msg).removeReaction(emoji, user.isYourself()));
+            message.ifPresent(msg -> ((MessageImpl) msg).removeReaction(emoji, userId == api.getYourself().getId()));
 
-            ReactionRemoveEvent event = new ReactionRemoveEventImpl(api, messageId, channel, emoji, user);
+            ReactionRemoveEvent event = new ReactionRemoveEventImpl(api, messageId, channel, emoji, userId);
 
             Optional<Server> optionalServer = channel.asServerChannel().map(ServerChannel::getServer);
             api.getEventDispatcher().dispatchReactionRemoveEvent(

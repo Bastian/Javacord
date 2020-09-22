@@ -1,6 +1,6 @@
 package org.javacord.core.event.user;
 
-import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.Member;
 import org.javacord.api.event.user.UserChangeDeafenedEvent;
 
 /**
@@ -8,38 +8,39 @@ import org.javacord.api.event.user.UserChangeDeafenedEvent;
  */
 public class UserChangeDeafenedEventImpl extends ServerUserEventImpl implements UserChangeDeafenedEvent {
 
-    /**
-     * The new deafened state of the user.
-     */
-    private final boolean newDeafened;
-
-    /**
-     * The old deafened state of the user.
-     */
-    private final boolean oldDeafened;
+    private final Member newMember;
+    private final Member oldMember;
 
     /**
      * Creates a new user change deafened event.
      *
-     * @param userId The id of the user of the event.
-     * @param server The server in which the deafened state of the user was changed.
-     * @param newDeafened The new deafened state of the user.
-     * @param oldDeafened The old deafened state of the user.
+     * @param newMember The new member.
+     * @param oldMember The old member.
      */
-    public UserChangeDeafenedEventImpl(long userId, Server server, boolean newDeafened, boolean oldDeafened) {
-        super(userId, server);
-        this.newDeafened = newDeafened;
-        this.oldDeafened = oldDeafened;
+    public UserChangeDeafenedEventImpl(Member newMember, Member oldMember) {
+        super(newMember.getUser(), newMember.getServer());
+        this.newMember = newMember;
+        this.oldMember = oldMember;
+    }
+
+    @Override
+    public Member getOldMember() {
+        return oldMember;
+    }
+
+    @Override
+    public Member getMember() {
+        return newMember;
     }
 
     @Override
     public boolean isNewDeafened() {
-        return newDeafened;
+        // TODO This is wrong.
+        return newMember.isSelfDeafened();
     }
 
     @Override
     public boolean isOldDeafened() {
-        return oldDeafened;
+        return oldMember.isSelfDeafened();
     }
-
 }

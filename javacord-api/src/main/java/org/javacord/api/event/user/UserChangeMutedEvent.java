@@ -5,7 +5,7 @@ import org.javacord.api.event.server.ServerEvent;
 /**
  * A user change muted event.
  */
-public interface UserChangeMutedEvent extends UserEvent, ServerEvent {
+public interface UserChangeMutedEvent extends UserEvent, ServerEvent, MemberUpdateEvent {
 
     /**
      * Gets the new muted state of the user.

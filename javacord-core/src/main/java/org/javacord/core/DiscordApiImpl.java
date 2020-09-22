@@ -844,15 +844,12 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      *
      * @param member The member to add.
      */
-    public void addMemberToCache(Member member) {
+    public void addMemberToCacheOrReplaceExisting(Member member) {
         entityCache.getAndUpdate(cache -> {
             Member oldMember = cache.getMemberCache()
                     .getMemberByIdAndServer(member.getId(), member.getServer().getId())
                     .orElse(null);
-            if (oldMember != member && oldMember instanceof Cleanupable) {
-                ((Cleanupable) oldMember).cleanup();
-            }
-            return cache.updateMemberCache(memberCache -> memberCache.addMember(member));
+            return cache.updateMemberCache(memberCache -> memberCache.removeMember(oldMember).addMember(member));
         });
     }
 
@@ -867,9 +864,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
             Member member = cache.getMemberCache().getMemberByIdAndServer(memberId, serverId).orElse(null);
             if (member == null) {
                 return cache;
-            }
-            if (member instanceof Cleanupable) {
-                ((Cleanupable) member).cleanup();
             }
             return cache.updateMemberCache(memberCache -> memberCache.removeMember(member));
         });
@@ -1520,6 +1514,11 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
                 .setUrlParameters(code)
                 .addQueryParameter("with_counts", "true")
                 .execute(result -> new InviteImpl(this, result.getJsonBody()));
+    }
+
+    @Override
+    public boolean isUserCacheEnabled() {
+        return userCacheEnabled;
     }
 
     @Override

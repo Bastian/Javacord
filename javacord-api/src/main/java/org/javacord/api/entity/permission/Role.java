@@ -7,12 +7,16 @@ import org.javacord.api.entity.Permissionable;
 import org.javacord.api.entity.UpdatableFromCache;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.ServerUpdater;
+import org.javacord.api.entity.user.Member;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.listener.server.role.RoleAttachableListenerManager;
 
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a Discord role, e.g. "moderator".
@@ -73,16 +77,39 @@ public interface Role extends DiscordEntity, Mentionable, Nameable, Permissionab
      * Gets a collection with all users who have this role.
      *
      * @return A collection with all users who have this role.
+     * @deprecated Use {@link #getMembers()} instead.
      */
-    Collection<User> getUsers();
+    @Deprecated
+    default Collection<User2> getUsers() {
+        return getMembers().stream().map(Member::getUser).collect(Collectors.toSet());
+    }
 
     /**
-     * Checks whether the specified users has this role.
+     * Gets a set with all members who have this roles.
+     *
+     * @return A set with all members who have this roles.
+     */
+    Set<Member> getMembers();
+
+    /**
+     * Checks whether the given user has this role.
      *
      * @param user the user to check
-     * @return true if the user has this role; false otherwise
+     * @return Whether the given user has this role.
      */
-    boolean hasUser(User user);
+    default boolean hasUser(User2 user) {
+        return getMembers().stream().anyMatch(member -> member.getId() == user.getId());
+    }
+
+    /**
+     * Checks if the given member has this roles.
+     *
+     * @param member The member to check.
+     * @return Whether the given member has this role.
+     */
+    default boolean hasMember(Member member) {
+        return hasUser(member.getUser());
+    }
 
     /**
      * Gets the permissions of the role.

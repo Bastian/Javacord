@@ -39,6 +39,37 @@ public class User2Impl implements User2 {
         bot = data.hasNonNull("bot") && data.get("bot").asBoolean();
     }
 
+    private User2Impl(DiscordApiImpl api, Long id, String name, String discriminator, String avatarHash, boolean bot) {
+        this.api = api;
+        this.id = id;
+        this.name = name;
+        this.discriminator = discriminator;
+        this.avatarHash = avatarHash;
+        this.bot = bot;
+    }
+
+    public User2Impl replacePartialUserData(JsonNode partialUserJson) {
+        if (partialUserJson.get("id").asLong() != id) {
+            throw new IllegalArgumentException("Ids of user do not match");
+        }
+        String name = this.name;
+        if (partialUserJson.hasNonNull("username")) {
+            name = partialUserJson.get("username").asText();
+        }
+
+        String discriminator = this.discriminator;
+        if (partialUserJson.hasNonNull("discriminator")) {
+            discriminator = partialUserJson.get("discriminator").asText();
+        }
+
+        String avatarHash = this.avatarHash;
+        if (partialUserJson.hasNonNull("avatar")) {
+            avatarHash = partialUserJson.get("avatar").asText();
+        }
+
+        return new User2Impl(api, id, name, discriminator, avatarHash, bot);
+    }
+
     @Override
     public DiscordApi getApi() {
         return api;

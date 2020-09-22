@@ -1,6 +1,7 @@
 package org.javacord.core.event.server.member;
 
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.server.member.ServerMemberEvent;
 import org.javacord.core.event.server.ServerEventImpl;
 
@@ -12,7 +13,7 @@ public abstract class ServerMemberEventImpl extends ServerEventImpl implements S
     /**
      * The user of the event.
      */
-    private final User user;
+    private final User2 user;
 
     /**
      * Creates a new server member event.
@@ -20,13 +21,13 @@ public abstract class ServerMemberEventImpl extends ServerEventImpl implements S
      * @param server The server of the event.
      * @param user The user of the event.
      */
-    public ServerMemberEventImpl(Server server, User user) {
+    public ServerMemberEventImpl(Server server, User2 user) {
         super(server);
         this.user = user;
     }
 
     @Override
-    public User getUser() {
+    public User2 getUser() {
         return user;
     }
 

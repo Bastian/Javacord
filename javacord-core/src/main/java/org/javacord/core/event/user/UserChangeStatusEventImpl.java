@@ -1,6 +1,7 @@
 package org.javacord.core.event.user;
 
 import org.javacord.api.entity.DiscordClient;
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.event.user.UserChangeStatusEvent;
 
@@ -40,7 +41,7 @@ public class UserChangeStatusEventImpl extends UserEventImpl implements UserChan
      * @param newClientStatus The new client specific status of the user.
      * @param oldClientStatus The old client specific status of the user.
      */
-    public UserChangeStatusEventImpl(User user, UserStatus newStatus, UserStatus oldStatus,
+    public UserChangeStatusEventImpl(User2 user, UserStatus newStatus, UserStatus oldStatus,
                                      Map<DiscordClient, UserStatus> newClientStatus,
                                      Map<DiscordClient, UserStatus> oldClientStatus) {
         super(user);

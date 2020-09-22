@@ -44,6 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -447,7 +448,7 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
      *
      * @return A collection with all members of the server.
      */
-    Collection<Member> getMembers();
+    Set<Member> getMembers();
 
     /**
      * Gets a member by its id.

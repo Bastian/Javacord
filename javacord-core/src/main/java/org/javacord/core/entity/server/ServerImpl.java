@@ -33,6 +33,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.server.ServerFeature;
 import org.javacord.api.entity.server.VerificationLevel;
 import org.javacord.api.entity.server.invite.RichInvite;
+import org.javacord.api.entity.user.Member;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.entity.user.UserStatus;
 import org.javacord.api.entity.webhook.Webhook;
@@ -712,18 +713,13 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     /**
      * Removes a member from the server.
      *
-     * @param user The user to remove.
+     * @param userId The id of the user to remove.
      */
-    public void removeMember(User user) {
-        long userId = user.getId();
-        members.remove(userId);
-        nicknames.remove(userId);
-        selfMuted.remove(userId);
-        selfDeafened.remove(userId);
+    public void removeMember(long userId) {
         muted.remove(userId);
         deafened.remove(userId);
-        getRoles().forEach(role -> ((RoleImpl) role).removeUserFromCache(user));
-        joinedAtTimestamps.remove(userId);
+        getRoles().forEach(role -> ((RoleImpl) role).removeUserFromCache(userId));
+        api.removeMemberFromCache(userId, getId());
     }
 
     /**
@@ -736,14 +732,15 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     /**
      * Adds a member to the server.
      *
-     * @param member The user to add.
+     * @param memberJson The user to add.
      */
-    public void addMember(JsonNode member) {
-        api.addMemberToCache(new MemberImpl(api, this, member, null));
+    public void addMember(JsonNode memberJson) {
+        MemberImpl member = new MemberImpl(api, this, memberJson, null);
+        api.addMemberToCacheOrReplaceExisting(member);
 
-        for (JsonNode roleIds : member.get("roles")) {
+        for (JsonNode roleIds : memberJson.get("roles")) {
             long roleId = Long.parseLong(roleIds.asText());
-            getRoleById(roleId).map(role -> ((RoleImpl) role)).ifPresent(role -> role.addUserToCache(user));
+            getRoleById(roleId).map(role -> ((RoleImpl) role)).ifPresent(role -> role.addUserToCache(member.getId()));
         }
 
         synchronized (readyConsumers) {
@@ -1178,12 +1175,12 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     @Override
-    public Collection<User> getMembers() {
+    public Collection<Member> getMembers() {
         return Collections.unmodifiableList(new ArrayList<>(members.values()));
     }
 
     @Override
-    public Optional<User> getMemberById(long id) {
+    public Optional<Member> getMemberById(long id) {
         return Optional.ofNullable(members.get(id));
     }
 

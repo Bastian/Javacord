@@ -1,5 +1,6 @@
 package org.javacord.core.event.user;
 
+import org.javacord.api.entity.user.User2;
 import org.javacord.api.event.user.UserChangeDiscriminatorEvent;
 
 /**
@@ -24,7 +25,7 @@ public class UserChangeDiscriminatorEventImpl extends UserEventImpl implements U
      * @param newDiscriminator The new discriminator of the user.
      * @param oldDiscriminator The old discriminator of the user.
      */
-    public UserChangeDiscriminatorEventImpl(User user, String newDiscriminator, String oldDiscriminator) {
+    public UserChangeDiscriminatorEventImpl(User2 user, String newDiscriminator, String oldDiscriminator) {
         super(user);
         this.newDiscriminator = newDiscriminator;
         this.oldDiscriminator = oldDiscriminator;

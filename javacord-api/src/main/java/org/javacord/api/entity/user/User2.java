@@ -1,5 +1,6 @@
 package org.javacord.api.entity.user;
 
+import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.Mentionable;
@@ -72,8 +73,7 @@ public interface User2 extends DiscordEntity, Nameable, Mentionable {
      * @see DiscordApi#getYourself()
      */
     default boolean isYourself() {
-        // TODO
-        return false;
+        return getApi().getYourself().getId() == getId();
     }
 
 }

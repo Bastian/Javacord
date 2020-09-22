@@ -24,7 +24,7 @@ public abstract class SingleReactionEventImpl extends RequestableMessageEventImp
     /**
      * The user of the event.
      */
-    private final User user;
+    private final long userId;
 
     /**
      * Creates a new single reaction event.
@@ -33,12 +33,12 @@ public abstract class SingleReactionEventImpl extends RequestableMessageEventImp
      * @param messageId The id of the message.
      * @param channel The text channel in which the message was sent.
      * @param emoji The emoji.
-     * @param user The "owner" of the reaction.
+     * @param userId The id of the "owner" of the reaction.
      */
-    public SingleReactionEventImpl(DiscordApi api, long messageId, TextChannel channel, Emoji emoji, User user) {
+    public SingleReactionEventImpl(DiscordApi api, long messageId, TextChannel channel, Emoji emoji, long userId) {
         super(api, messageId, channel);
         this.emoji = emoji;
-        this.user = user;
+        this.userId = userId;
     }
 
     @Override
@@ -47,8 +47,8 @@ public abstract class SingleReactionEventImpl extends RequestableMessageEventImp
     }
 
     @Override
-    public User getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
     @Override
