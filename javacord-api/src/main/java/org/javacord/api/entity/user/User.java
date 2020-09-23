@@ -6,13 +6,14 @@ import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.Mentionable;
 import org.javacord.api.entity.Nameable;
 import org.javacord.api.entity.channel.PrivateChannel;
+import org.javacord.api.entity.message.Messageable;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.listener.user.UserAttachableListenerManager;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public interface User extends DiscordEntity, Nameable, Mentionable, UserAttachableListenerManager {
+public interface User extends DiscordEntity, Messageable, Nameable, Mentionable, UserAttachableListenerManager {
 
     @Override
     default String getMentionTag() {
@@ -108,8 +109,19 @@ public interface User extends DiscordEntity, Nameable, Mentionable, UserAttachab
     }
 
     /**
+     * Gets the private channel with the user.
+     *
+     * <p>This will only be present, if there was an conversation with the user in the past or you manually opened a
+     * private channel with the given user, using {@link #openPrivateChannel()}.
+     *
+     * @return The private channel with the user.
+     */
+    Optional<PrivateChannel> getPrivateChannel();
+
+    /**
      * Opens a new private channel with the given user.
-     * If there's already a private channel with the user, it will just return the one which already exists.
+     *
+     * <p>If there's already a private channel with the user, it will just return the one which already exists.
      *
      * @return The new (or old) private channel with the user.
      */

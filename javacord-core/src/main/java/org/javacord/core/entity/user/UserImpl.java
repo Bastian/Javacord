@@ -18,6 +18,7 @@ import org.javacord.core.util.rest.RestRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -142,11 +143,19 @@ public class UserImpl implements User, InternalUserAttachableListenerManager {
     }
 
     @Override
+    public Optional<PrivateChannel> getPrivateChannel() {
+        return api.getEntityCache().get().getChannelCache().getPrivateChannelByUserId(getId());
+    }
+
+    @Override
     public CompletableFuture<PrivateChannel> openPrivateChannel() {
-        // TODO Maybe cache the private channel?
-        return new RestRequest<PrivateChannel>(api, RestMethod.POST, RestEndpoint.USER_CHANNEL)
-                .setBody(JsonNodeFactory.instance.objectNode().put("recipient_id", getIdAsString()))
-                .execute(result -> new PrivateChannelImpl(api, result.getJsonBody()));
+        return getPrivateChannel()
+                .map(CompletableFuture::completedFuture)
+                .orElseGet(() ->
+                        new RestRequest<PrivateChannel>(api, RestMethod.POST, RestEndpoint.USER_CHANNEL)
+                                .setBody(JsonNodeFactory.instance.objectNode().put("recipient_id", getIdAsString()))
+                                .execute(result -> new PrivateChannelImpl(api, result.getJsonBody()))
+                );
     }
 
     @Override
