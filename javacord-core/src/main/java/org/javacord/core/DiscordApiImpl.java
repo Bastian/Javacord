@@ -52,7 +52,9 @@ import org.javacord.core.entity.message.MessageSetImpl;
 import org.javacord.core.entity.message.UncachedMessageUtilImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.entity.server.invite.InviteImpl;
+import org.javacord.core.entity.user.MemberImpl;
 import org.javacord.core.entity.user.UserImpl;
+import org.javacord.core.entity.user.UserPresence;
 import org.javacord.core.entity.webhook.WebhookImpl;
 import org.javacord.core.util.ClassHelper;
 import org.javacord.core.util.Cleanupable;
@@ -99,6 +101,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -833,6 +836,21 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     }
 
     /**
+     * Updates a user presence in the cache.
+     *
+     * @param userId The id of the user.
+     * @param mapper A function that takes the old user presence (or null) and returns the new user presence.
+     */
+    public void updateUserPresence(long userId, UnaryOperator<UserPresence> mapper) {
+        entityCache.getAndUpdate(cache -> {
+            UserPresence presence = cache.getUserPresenceCache().getPresenceByUserId(userId)
+                    .orElseGet(() -> new UserPresence(userId, null, null, io.vavr.collection.HashMap.empty()));
+            return cache.updateUserPresenceCache(userPresenceCache ->
+                    userPresenceCache.removeUserPresence(presence).addUserPresence(mapper.apply(presence)));
+        });
+    }
+
+    /**
      * Removes a channel from the cache.
      *
      * @param channelId The id of the channel to remove.
@@ -861,6 +879,24 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
                     .getMemberByIdAndServer(member.getId(), member.getServer().getId())
                     .orElse(null);
             return cache.updateMemberCache(memberCache -> memberCache.removeMember(oldMember).addMember(member));
+        });
+    }
+
+    /**
+     * Updates the user object for all members in the cache.
+     *
+     * @param user The new user object.
+     */
+    public void updateUserOfAllMembers(User user) {
+        entityCache.getAndUpdate(cache ->  {
+            JavacordEntityCache newCache = cache;
+            for (Member member : cache.getMemberCache().getMembersById(user.getId())) {
+                newCache = newCache.updateMemberCache(memberCache -> memberCache
+                        .removeMember(member)
+                        .addMember(((MemberImpl) member).setUser((UserImpl) user))
+                );
+            }
+            return newCache;
         });
     }
 

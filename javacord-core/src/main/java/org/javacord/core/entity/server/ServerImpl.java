@@ -411,25 +411,29 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
                 }
 
                 if (presenceJson.has("game")) {
-                    Activity activity = null;
+                    Activity activity;
                     if (!presenceJson.get("game").isNull()) {
                         activity = new ActivityImpl(api, presenceJson.get("game"));
+                    } else {
+                        activity = null;
                     }
-                    // TODO user.setActivity(activity);
+                    api.updateUserPresence(userId, presence -> presence.setActivity(activity));
                 }
                 if (presenceJson.has("status")) {
                     UserStatus status = UserStatus.fromString(presenceJson.get("status").asText());
-                    // TODO user.setStatus(status);
+                    api.updateUserPresence(userId, presence -> presence.setStatus(status));
                 }
 
                 if (presenceJson.has("client_status")) {
                     JsonNode clientStatus = presenceJson.get("client_status");
                     for (DiscordClient client : DiscordClient.values()) {
                         if (clientStatus.hasNonNull(client.getName())) {
-                            // TODO user.setClientStatus(
-                            //        client, UserStatus.fromString(clientStatus.get(client.getName()).asText()));
+                            UserStatus status = UserStatus.fromString(clientStatus.get(client.getName()).asText());
+                            api.updateUserPresence(userId, presence -> presence
+                                    .setClientStatus(presence.getClientStatus().put(client, status)));
                         } else {
-                            // TODO user.setClientStatus(client, UserStatus.OFFLINE);
+                            api.updateUserPresence(userId, presence -> presence
+                                    .setClientStatus(presence.getClientStatus().put(client, UserStatus.OFFLINE)));
                         }
                     }
                 }

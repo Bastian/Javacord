@@ -8,10 +8,11 @@ import java.util.function.UnaryOperator;
 public class JavacordEntityCache {
 
     private static final JavacordEntityCache EMPTY_CACHE = new JavacordEntityCache(
-            ChannelCache.empty(), MemberCache.empty());
+            ChannelCache.empty(), MemberCache.empty(), UserPresenceCache.empty());
 
     private final ChannelCache channelCache;
     private final MemberCache memberCache;
+    private final UserPresenceCache userPresenceCache;
     
     /**
      * Gets an empty Javacord cache.
@@ -22,9 +23,11 @@ public class JavacordEntityCache {
         return EMPTY_CACHE;
     }
 
-    private JavacordEntityCache(ChannelCache channelCache, MemberCache memberCache) {
+    private JavacordEntityCache(
+            ChannelCache channelCache, MemberCache memberCache, UserPresenceCache userPresenceCache) {
         this.channelCache = channelCache;
         this.memberCache = memberCache;
+        this.userPresenceCache = userPresenceCache;
     }
 
     /**
@@ -53,7 +56,7 @@ public class JavacordEntityCache {
      * @return The new Javacord entity cache.
      */
     public JavacordEntityCache setChannelCache(ChannelCache channelCache) {
-        return new JavacordEntityCache(channelCache, memberCache);
+        return new JavacordEntityCache(channelCache, memberCache, userPresenceCache);
     }
 
     /**
@@ -82,6 +85,35 @@ public class JavacordEntityCache {
      * @return The new Javacord entity cache.
      */
     public JavacordEntityCache setMemberCache(MemberCache memberCache) {
-        return new JavacordEntityCache(channelCache, memberCache);
+        return new JavacordEntityCache(channelCache, memberCache, userPresenceCache);
+    }
+
+    /**
+     * Gets the user presence cache.
+     *
+     * @return The user presence cache.
+     */
+    public UserPresenceCache getUserPresenceCache() {
+        return userPresenceCache;
+    }
+
+    /**
+     * Updates the user presence cache.
+     *
+     * @param mapper A function that takes the old user presence cache and returns the new one.
+     * @return The new Javacord entity cache.
+     */
+    public JavacordEntityCache updateUserPresenceCache(UnaryOperator<UserPresenceCache> mapper) {
+        return setUserPresenceCache(mapper.apply(userPresenceCache));
+    }
+
+    /**
+     * Sets the user presence cache.
+     *
+     * @param userPresenceCache The user presence cache to set.
+     * @return The new Javacord entity cache.
+     */
+    public JavacordEntityCache setUserPresenceCache(UserPresenceCache userPresenceCache) {
+        return new JavacordEntityCache(channelCache, memberCache, userPresenceCache);
     }
 }

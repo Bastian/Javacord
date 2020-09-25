@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.Javacord;
+import org.javacord.api.entity.DiscordClient;
 import org.javacord.api.entity.Icon;
 import org.javacord.api.entity.channel.PrivateChannel;
 import org.javacord.api.entity.user.User;
+import org.javacord.api.entity.user.UserStatus;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.IconImpl;
 import org.javacord.core.entity.channel.PrivateChannelImpl;
@@ -79,6 +81,15 @@ public class UserImpl implements User, InternalUserAttachableListenerManager {
         return new UserImpl(api, id, name, discriminator, avatarHash, bot);
     }
 
+    /**
+     * Gets the avatar hash of the user.
+     *
+     * @return The avatar hash.
+     */
+    public String getAvatarHash() {
+        return avatarHash;
+    }
+
     @Override
     public DiscordApi getApi() {
         return api;
@@ -140,6 +151,21 @@ public class UserImpl implements User, InternalUserAttachableListenerManager {
     @Override
     public boolean isBot() {
         return bot;
+    }
+
+    @Override
+    public UserStatus getStatus() {
+        return api.getEntityCache().get().getUserPresenceCache().getPresenceByUserId(getId())
+                .map(UserPresence::getStatus)
+                .orElse(UserStatus.OFFLINE);
+    }
+
+    @Override
+    public UserStatus getStatusOnClient(DiscordClient client) {
+        return api.getEntityCache().get().getUserPresenceCache().getPresenceByUserId(getId())
+                .map(UserPresence::getClientStatus)
+                .map(clientStatusMap -> clientStatusMap.getOrElse(client, UserStatus.OFFLINE))
+                .orElse(UserStatus.OFFLINE);
     }
 
     @Override
