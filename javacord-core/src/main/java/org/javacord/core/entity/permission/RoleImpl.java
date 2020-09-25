@@ -7,6 +7,7 @@ import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.Member;
+import org.javacord.api.entity.user.User;
 import org.javacord.core.DiscordApiImpl;
 import org.javacord.core.entity.server.ServerImpl;
 import org.javacord.core.listener.server.role.InternalRoleAttachableListenerManager;
@@ -132,7 +133,7 @@ public class RoleImpl implements Role, InternalRoleAttachableListenerManager {
     /**
      * Removes a user from the role.
      *
-     * @param user The user to remove.
+     * @param userId The if of the user to remove.
      */
     public void removeUserFromCache(long userId) {
         userHashSetLock.writeLock().lock();
@@ -261,6 +262,11 @@ public class RoleImpl implements Role, InternalRoleAttachableListenerManager {
         } finally {
             userHashSetLock.readLock().unlock();
         }
+    }
+
+    @Override
+    public boolean hasUser(User user) {
+        return userIds.contains(user.getId());
     }
 
     @Override

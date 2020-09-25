@@ -97,9 +97,7 @@ public interface Role extends DiscordEntity, Mentionable, Nameable, Permissionab
      * @param user the user to check
      * @return Whether the given user has this role.
      */
-    default boolean hasUser(User user) {
-        return getMembers().stream().anyMatch(member -> member.getId() == user.getId());
-    }
+    boolean hasUser(User user);
 
     /**
      * Checks if the given member has this roles.
