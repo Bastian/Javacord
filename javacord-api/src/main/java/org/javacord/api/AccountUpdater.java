@@ -35,7 +35,8 @@ public class AccountUpdater {
      * @param username The username to set.
      * @return The current instance in order to chain call methods.
      */
-    public AccountUpdater setUsername(String username) {
+    public AccountUpdater setUsername(String username)
+    {
         delegate.setUsername(username);
         return this;
     }
@@ -48,6 +49,17 @@ public class AccountUpdater {
      * @return The current instance in order to chain call methods.
      */
     public AccountUpdater setAvatar(BufferedImage avatar) {
+        delegate.setAvatar(avatar);
+        return this;
+    }
+
+    /**
+     * Queues the avatar of the connected account to get updated.
+     * This method assumes the file type is "png"!
+     * @param avatar The avatar to set.
+     * @return The current instance in order to chain call methods.
+     */
+    public AccountUpdater setAvatar2(BufferedImage avatar) {
         delegate.setAvatar(avatar);
         return this;
     }
