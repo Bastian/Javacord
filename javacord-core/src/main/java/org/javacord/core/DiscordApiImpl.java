@@ -695,12 +695,11 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     /**
      * Checks if the user cache is enabled.
      *
-     * @return Whetehr or not teh user cache is enabled.
+     * @return Whether or not teh user cache is enabled.
      */
     public boolean hasUserCacheEnabled() {
         return userCacheEnabled;
     }
-
     /**
      * Gets the used {@link OkHttpClient http client} for this api instance.
      *
