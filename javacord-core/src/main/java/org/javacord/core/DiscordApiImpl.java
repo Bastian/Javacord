@@ -712,7 +712,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
         }
         return httpClient;
     }
-
     /**
      * Gets the event dispatcher which is used to dispatch events.
      *

@@ -51,7 +51,8 @@ public class AccountUpdaterDelegateImpl implements AccountUpdaterDelegate {
     }
 
     @Override
-    public void setAvatar(BufferedImage avatar) {
+    public void setAvatar(BufferedImage avatar)
+    {
         this.avatar = (avatar == null) ? null : new FileContainer(avatar, "png");
     }
 
