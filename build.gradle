@@ -43,6 +43,7 @@ allprojects {
     checkstyle {
         toolVersion '8.9'
         maxWarnings 0
+        ignoreFailures findProperty("ignoreCheckstyleFailures") != null
     }
 
     normalization {
