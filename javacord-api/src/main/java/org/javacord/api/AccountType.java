@@ -14,7 +14,7 @@ public enum AccountType {
     /**
      * A bot account.
      */
-    BOT("Bot ");
+    BOT("Bot "  );
 
     private final String tokenPrefix;
 

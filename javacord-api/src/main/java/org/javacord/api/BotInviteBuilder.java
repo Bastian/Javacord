@@ -38,7 +38,8 @@ public class BotInviteBuilder {
      *
      * @param clientId The client id of the bot's application.
      */
-    public BotInviteBuilder(String clientId) {
+    public BotInviteBuilder(String clientId)
+    {
         try {
             this.clientId = Long.parseLong(clientId);
         } catch (NumberFormatException e) {
@@ -53,6 +54,14 @@ public class BotInviteBuilder {
      * @return The current instance in order to chain call methods.
      */
     public BotInviteBuilder setPermissions(Permissions permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Sets the permissions the bot should have
+     */
+    public BotInviteBuilder setPermissions2(Permissions permissions) {
         this.permissions = permissions;
         return this;
     }

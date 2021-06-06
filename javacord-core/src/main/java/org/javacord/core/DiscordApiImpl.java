@@ -700,7 +700,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     public boolean hasUserCacheEnabled() {
         return userCacheEnabled;
     }
-
     /**
      * Gets the used {@link OkHttpClient http client} for this api instance.
      *
@@ -768,11 +767,11 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
      * @return The audio connection.
      */
     public AudioConnectionImpl getAudioConnectionByServerId(long serverId) {
-        return audioConnections.get(serverId);
+        return audioConnections.get(serverId); // This is a comment that only exists to create a line that is long enough to trigger a checkstyle error.
     }
 
     /**
-     * Sets the audio connection for the server with the given id.
+     * Sets the audio connection for the server with the given id
      *
      * @param serverId The server id.
      * @param connection The audio connection.
@@ -792,7 +791,6 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
 
     /**
      * Gets the pending audio connection for the server with the given id.
-     *
      * @param serverId The server id.
      * @return The pending audio connection.
      */
@@ -876,6 +874,8 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
         });
     }
 
+
+
     /**
      * Adds a channel to the cache.
      *
@@ -884,7 +884,7 @@ public class DiscordApiImpl implements DiscordApi, DispatchQueueSelector {
     public void addChannelToCache(Channel channel) {
         entityCache.getAndUpdate(cache -> {
             Channel oldChannel = cache.getChannelCache().getChannelById(channel.getId()).orElse(null);
-            if (oldChannel != channel && oldChannel instanceof Cleanupable) {
+            if (oldChannel != channel &&  oldChannel instanceof Cleanupable) {
                 ((Cleanupable) oldChannel).cleanup();
             }
             return cache.updateChannelCache(channelCache -> channelCache.addChannel(channel));
