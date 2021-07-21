@@ -828,12 +828,27 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     /**
      * Adds members to the server.
      *
-     * @param members An array of guild member objects.
+     * @param membersJson An array of guild member objects.
      */
-    public void addMembers(JsonNode members) {
-        for (JsonNode member : members) {
-            addMember(member);
+    public void addMembers(JsonNode membersJson) {
+        for (JsonNode memberJson : membersJson) {
+            addMember(memberJson);
         }
+    }
+
+    /**
+     * Adds members to the server and returns the added members.
+     *
+     * @param membersJson An array of guild member objects.
+     * @return The added members.
+     */
+    public List<Member> addAndGetMembers(JsonNode membersJson) {
+        List<Member> members = new ArrayList<>();
+        for (JsonNode memberJson : membersJson) {
+            Member member = addMember(memberJson);
+            members.add(member);
+        }
+        return members;
     }
 
     /**
