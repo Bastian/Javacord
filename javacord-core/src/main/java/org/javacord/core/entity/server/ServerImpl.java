@@ -1284,6 +1284,11 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     @Override
+    public void requestMembers() {
+        api.getWebSocketAdapter().queueRequestGuildMembers(this);
+    }
+
+    @Override
     public Set<User> getMembers() {
         return api.getEntityCache().get().getMemberCache()
                 .getMembersByServer(getId())
